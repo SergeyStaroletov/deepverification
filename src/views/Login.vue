@@ -16,7 +16,6 @@ export default {
         .auth()
         .signInWithPopup(provider)
         .then(result => {
-          this.$store.commit("LOGIN", result.user);
           this.$router.replace({ name: "home" });
         })
         .catch(err => {

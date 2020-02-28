@@ -1,19 +1,20 @@
 <template>
   <div class="home">
-    Главная
+    <h4>Главная</h4>
     <p>{{ user.displayName }}</p>
-    <img :src="user.photoURL" />
+    <img :src="user.photoURL" width="64" />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import firebase from "firebase";
 
 export default {
   name: "home",
   computed: {
     user() {
-      return this.$store.state.user;
+      return firebase.auth().currentUser;
     }
   },
   components: {}
