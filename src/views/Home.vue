@@ -13,8 +13,10 @@
       </el-form-item>
     </el-form>
     <ul>
-      <li v-for="project in projects" :key="project.name">
-        {{ project.name }}
+      <li v-for="project in projects" :key="project.id">
+        <router-link :to="{ name: 'project', params: { id: project.id } }">
+          {{ project.name }}
+        </router-link>
         <el-button
           type="danger"
           icon="el-icon-delete"
