@@ -1,30 +1,38 @@
 <template>
   <div class="home">
-    <h4>Главная</h4>
-    <p>{{ user.displayName }}</p>
-    <img :src="user.photoURL" width="64" />
-    <br />
-    <el-form :inline="true" :model="form">
-      <el-form-item label="Название проекта">
-        <el-input v-model="form.name" placeholder="Название проекта"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="createProject">Создать</el-button>
-      </el-form-item>
-    </el-form>
-    <ul>
-      <li v-for="project in projects" :key="project.id">
-        <router-link :to="{ name: 'project', params: { id: project.id } }">
-          {{ project.name }}
-        </router-link>
-        <el-button
-          type="danger"
-          icon="el-icon-delete"
-          circle
-          @click="deleteProject(project.id)"
-        ></el-button>
-      </li>
-    </ul>
+    <Menu :user="this.user"></Menu>
+
+    <template>
+      <el-table :data="projects" stripe style="width: 100%">
+        <el-table-column prop="name" label="Название">
+          <template slot-scope="scope">
+            <router-link :to="'/project/' + projects[scope.$index].id">
+              {{ projects[scope.$index].name }}
+            </router-link>
+          </template>
+        </el-table-column>
+        <el-table-column prop="author" label="Владелец">
+          <template slot-scope="scope">
+            {{
+              projects[scope.$index].author.uid === user.uid
+                ? "Я"
+                : projects[scope.$index].author.displayName
+            }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="lastEdit" label="Последнее редактирование">
+          <template slot-scope="scope">
+            {{ new Date(projects[scope.$index].lastEdit) }}
+          </template>
+        </el-table-column>
+        <el-table-column label="Действия" width="120">
+          <template slot-scope="scope">
+            <DeleteProject :project="projects[scope.$index]" />
+            <ShareProject :project="projects[scope.$index]" />
+          </template>
+        </el-table-column>
+      </el-table>
+    </template>
   </div>
 </template>
 
@@ -32,6 +40,9 @@
 // @ is an alias to /src
 import firebase, { db } from "../firebase";
 import "firebase/firestore";
+import Menu from "../components/Menu";
+import DeleteProject from "../components/DeleteProject";
+import ShareProject from "../components/ShareProject";
 
 const projects = db.collection("projects");
 
@@ -42,13 +53,14 @@ export default {
       return firebase.auth().currentUser;
     }
   },
-  components: {},
+  components: { ShareProject, DeleteProject, Menu },
   methods: {
     createProject() {
       if (this.form.name) {
         db.collection("projects").add({
           name: this.form.name,
-          user: this.user.uid
+          author: { displayName: this.user.displayName, uid: this.user.uid },
+          lastEdit: Date.now()
         });
         this.form.name = null;
       } else {
@@ -57,17 +69,6 @@ export default {
           message: "Новый проект должен иметь название"
         });
       }
-    },
-    deleteProject(id) {
-      db.collection("projects")
-        .doc(id)
-        .delete()
-        .then(function() {
-          console.log("Document successfully deleted!");
-        })
-        .catch(function(error) {
-          console.error("Error removing document: ", error);
-        });
     }
   },
   data: () => ({
@@ -75,11 +76,12 @@ export default {
     form: { name: null }
   }),
   mounted() {
-    this.$bind("projects", projects.where("user", "==", this.user.uid)).then(
-      projects => {
-        this.projects = projects;
-      }
-    );
+    this.$bind(
+      "projects",
+      projects.where("author.uid", "==", this.user.uid)
+    ).then(projects => {
+      this.projects = projects;
+    });
   }
 };
 </script>

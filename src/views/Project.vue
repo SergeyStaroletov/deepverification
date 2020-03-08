@@ -1,9 +1,6 @@
 <template>
   <div>
-    <router-link :to="{ name: 'home' }">
-      Главная
-    </router-link>
-    <div>Проект - {{ project.name }}</div>
+    <Menu :user="this.user">{{ project.name }}</Menu>
     <el-button @click="add">Добавить</el-button>
     <div class="border">
       <v-stage
@@ -30,12 +27,19 @@
 <script>
 import firebase, { db } from "../firebase";
 import "firebase/firestore";
+import Menu from "../components/Menu";
 
 const width = window.innerWidth;
-const height = 0.8 * window.innerHeight;
+const height = window.innerHeight;
 
 export default {
   name: "Project",
+  components: { Menu },
+  computed: {
+    user() {
+      return firebase.auth().currentUser;
+    }
+  },
   data() {
     return {
       dragItemId: null,
