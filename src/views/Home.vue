@@ -6,7 +6,7 @@
       <el-table :data="projects" stripe style="width: 100%">
         <el-table-column prop="name" label="Название">
           <template slot-scope="scope">
-            <router-link :to="'/projects/' + projects[scope.$index].id">
+            <router-link :to="'/project/' + projects[scope.$index].id">
               {{ projects[scope.$index].name }}
             </router-link>
           </template>
