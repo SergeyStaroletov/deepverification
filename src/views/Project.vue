@@ -1,26 +1,40 @@
 <template>
   <div>
-    <Menu :user="this.user">{{ project.name }}</Menu>
-    <el-button @click="add">Добавить</el-button>
-    <div class="border">
-      <v-stage
-        :config="configKonva"
-        @dragstart="handleDragstart"
-        @dragend="handleDragend"
-      >
-        <v-layer>
-          <v-circle
-            v-for="circle in shapes"
-            :config="{
-              ...circle,
-              id: circle.id
-            }"
-            :x="lala"
-            :key="circle.id"
-          ></v-circle>
-        </v-layer>
-      </v-stage>
-    </div>
+    <el-container>
+      <el-header>
+        <Menu :user="this.user">{{ project.name }}</Menu>
+      </el-header>
+      <el-container>
+        <el-aside width="200px">
+          <el-form
+            label-position="top"
+            :inline="true"
+            :model="formInline"
+            class="demo-form-inline"
+          >
+            <el-form-item label="Approved by">
+              <el-input
+                v-model="formInline.label"
+                placeholder="Текст"
+              ></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="nodeAdd">Добавить</el-button>
+            </el-form-item>
+          </el-form>
+        </el-aside>
+        <el-main>
+          <simple-flowchart
+            :scene.sync="data"
+            @nodeDelete="nodeDelete($event)"
+            @nodeClick="nodeSelected($event)"
+            @linkAdded="linkAdded($event)"
+            @linkBreak="linkBreak($event)"
+            @moveSelectedNode="moveSelectedNode"
+          ></simple-flowchart
+        ></el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
 
@@ -29,12 +43,12 @@ import firebase, { db } from "../firebase";
 import "firebase/firestore";
 import Menu from "../components/Menu";
 
-const width = window.innerWidth;
-const height = window.innerHeight;
+import SimpleFlowchart from "../components/simple-flowchart/SimpleFlowchart";
+import "vue-simple-flowchart/dist/vue-flowchart.css";
 
 export default {
   name: "Project",
-  components: { Menu },
+  components: { Menu, SimpleFlowchart },
   computed: {
     user() {
       return firebase.auth().currentUser;
@@ -42,50 +56,105 @@ export default {
   },
   data() {
     return {
-      dragItemId: null,
-      shapes: {},
+      selectedNode: "",
+      formInline: { label: "" },
       project: {},
-      configKonva: {
-        width: width,
-        height: height
+      data: {
+        centerX: 1024,
+        centerY: 140,
+        scale: 1,
+        nodes: [],
+        links: []
       }
     };
   },
   methods: {
-    handleDragstart(e) {},
-    handleDragend(e) {
-      console.log(e.target);
+    nodeAdd() {
       db.collection("projects")
         .doc(this.$route.params.id)
-        .collection("shapes")
-        .doc(e.target.attrs.id)
-        .set(e.target.attrs)
+        .collection("nodes")
+        .add({
+          x: -700,
+          y: -69,
+          type: "Action",
+          label: this.formInline.label
+        });
+    },
+    nodeDelete(id) {
+      db.collection("projects")
+        .doc(this.project.id)
+        .collection("nodes")
+        .doc(id)
+        .delete()
+        .then(function() {
+          console.log("Document successfully deleted!");
+        })
+        .catch(function(error) {
+          console.error("Error removing document: ", error);
+        });
+    },
+    nodeSelected(e) {
+      this.selectedNode = e;
+    },
+    moveSelectedNode() {
+      let index = 0;
+      for (; index < this.data.nodes.length; index++) {
+        if (this.data.nodes[index].id === this.selectedNode) {
+          break;
+        }
+      }
+
+      db.collection("projects")
+        .doc(this.$route.params.id)
+        .collection("nodes")
+        .doc(this.selectedNode)
+        .set(this.data.nodes[index])
         .then(() => {
           console.log("user updated!");
         });
+      console.log(this.data.nodes.length);
     },
-    add() {
+    linkAdded(e) {
+      console.log(e);
+
       db.collection("projects")
         .doc(this.$route.params.id)
-        .collection("shapes")
+        .collection("links")
         .add({
-          x: 100,
-          y: 100,
-          radius: 70,
-          fill: "red",
-          stroke: "black",
-          strokeWidth: 4,
-          draggable: true
+          from: e.from,
+          to: e.to
+        });
+    },
+    linkBreak(e) {
+      console.log(e);
+
+      db.collection("projects")
+        .doc(this.project.id)
+        .collection("links")
+        .doc(e.id)
+        .delete()
+        .then(function() {
+          console.log("Document successfully deleted!");
+        })
+        .catch(function(error) {
+          console.error("Error removing document: ", error);
         });
     }
   },
   mounted() {
     this.$bind(
-      "shapes",
+      "data.nodes",
       db
         .collection("projects")
         .doc(this.$route.params.id)
-        .collection("shapes")
+        .collection("nodes")
+    );
+    this.$bind(
+      "data.links",
+      db
+        .collection("projects")
+        .doc(this.$route.params.id)
+        .collection("links")
     );
     this.$bind("project", db.collection("projects").doc(this.$route.params.id));
   }
