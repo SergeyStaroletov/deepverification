@@ -14,7 +14,9 @@
           <img class="google" src="../assets/google.svg" />
           Продолжить с Google</el-button
         >
-        <p id="bottom-text">Еще немного текста снизу, может со ссылками или копирайтами.</p>
+        <p id="bottom-text">
+          Еще немного текста снизу, может со ссылками или копирайтами.
+        </p>
       </div>
     </el-card>
   </div>
@@ -64,7 +66,7 @@ export default {
 .content {
   margin: 0 200px 0 200px;
   height: 100%;
-  position:relative;
+  position: relative;
 }
 
 .google {
