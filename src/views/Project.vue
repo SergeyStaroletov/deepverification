@@ -5,9 +5,7 @@
     :onAfterCommandExecute="handleAfterCommand"
   >
     <div class="root">
-      <div class="header">
-        {{ nodesCount }} : {{ edgesCount }}
-      </div>
+      <div class="header">{{ nodesCount }} : {{ edgesCount }}</div>
       <div class="editor-container">
         <div class="sidebar">
           <item-panel id="items">
@@ -67,6 +65,16 @@ export default {
   methods: {
     update() {
       this.$refs.vgEditor.propsAPI.read(this.data);
+    },
+    updateLastEdit() {
+      db.collection("projects")
+        .doc(this.$route.params.id)
+        .update({
+          lastEdit: Date.now()
+        })
+        .then(function() {
+          console.log("Document successfully updated!");
+        });
     },
     handleBeforeCommand({ command }) {
       // console.log("before command execute", command);
@@ -144,6 +152,7 @@ export default {
             .set(e);
         });
       }
+      this.updateLastEdit();
     }
   },
   mounted() {
