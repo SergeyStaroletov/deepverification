@@ -7,7 +7,7 @@
     <div class="root">
       <div class="header">
         {{ nodesCount }} : {{ edgesCount }}
-        <button @click="myClick">clik</button>
+        <!--        <button @click="myClick">clik</button>-->
       </div>
       <div class="editor-container">
         <div class="sidebar">
@@ -24,6 +24,17 @@
               type="node"
               size="72*72"
               shape="flow-rect"
+              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAE4AAAAwCAYAAAC/gkysAAACT0lEQVRoQ+3bvy+EMRgH8KfImW6xSkTEnyAxMYm/wCSRYMJkETGxiVgMggmTyWQUE7dI/AlikFgNbuGCSi95L72mfZ/26etX8r3x3j699tPnad/hqoiIRg/08fsnzU4MUWtkgOrKfIlPR0AT0cMzNW8eqdbXQ2f3K2pRGbTxQZrZnqJ6rRdaZQKtD6KNK2rePtG5Gt7Xr9cL1A+0uKQxeJMn9KbmLvTL7jTV48LQygisXVJTbTa0Xh4DSIrA4R2R2mpovQS4FDc6AlySV6cx4GRuyDihG+AAJxUQxmGPA5xQQBiGjAOcUEAYhowDnFBAGFZZxp3u7dD86nrXMHzfFQ3MM/NxY8rm4fZX1r/dT2y7FMNvgysGyw2ae14GEBtbLJILk7Jobmw2nDsoM5jUzIjJzJhsCEHEAsf8RtEmG850ZA/MzrTiR3yYklJKXRB7W8jJLh9oNlxsSYZWMzfe12+oNO22uZCVwIVQ7MGFyoWDi0FwDxmuNLnnMSWbDeeWgwsRA8OVMlfWqSX85+B8p1YZXOqE3f00tIdxMNzzH8k4u5TszAllXu7rhW/SvgXgJv/re5yvVH2naWx2cdkQQsqF4KArf4/j9jhfOaXicHucOynf9uB7ZUrFstt/++FQ7EvFycehce9eXHxZZleJVxlczur9x1jACVcNcIATCgjDkHGAEwoIw5BxgBMKCMOQcYATCgjDkHGAEwoIw5BxgBMKCMPaGYe/66frtf+ujwsi6XDtCyK4kpQG17mShEtw8XBdl+BMGK5dluP5rl1+AW7rR6GKRZtdAAAAAElFTkSuQmCC"
+            />
+            <div>Step</div>
+            <item
+              type="node"
+              size="144*72"
+              shape="flow-rect"
+              :model="{
+                // must have model property
+                label: 'Step'
+              }"
               src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAE4AAAAwCAYAAAC/gkysAAACT0lEQVRoQ+3bvy+EMRgH8KfImW6xSkTEnyAxMYm/wCSRYMJkETGxiVgMggmTyWQUE7dI/AlikFgNbuGCSi95L72mfZ/26etX8r3x3j699tPnad/hqoiIRg/08fsnzU4MUWtkgOrKfIlPR0AT0cMzNW8eqdbXQ2f3K2pRGbTxQZrZnqJ6rRdaZQKtD6KNK2rePtG5Gt7Xr9cL1A+0uKQxeJMn9KbmLvTL7jTV48LQygisXVJTbTa0Xh4DSIrA4R2R2mpovQS4FDc6AlySV6cx4GRuyDihG+AAJxUQxmGPA5xQQBiGjAOcUEAYhowDnFBAGFZZxp3u7dD86nrXMHzfFQ3MM/NxY8rm4fZX1r/dT2y7FMNvgysGyw2ae14GEBtbLJILk7Jobmw2nDsoM5jUzIjJzJhsCEHEAsf8RtEmG850ZA/MzrTiR3yYklJKXRB7W8jJLh9oNlxsSYZWMzfe12+oNO22uZCVwIVQ7MGFyoWDi0FwDxmuNLnnMSWbDeeWgwsRA8OVMlfWqSX85+B8p1YZXOqE3f00tIdxMNzzH8k4u5TszAllXu7rhW/SvgXgJv/re5yvVH2naWx2cdkQQsqF4KArf4/j9jhfOaXicHucOynf9uB7ZUrFstt/++FQ7EvFycehce9eXHxZZleJVxlczur9x1jACVcNcIATCgjDkHGAEwoIw5BxgBMKCMOQcYATCgjDkHGAEwoIw5BxgBMKCMPaGYe/66frtf+ujwsi6XDtCyK4kpQG17mShEtw8XBdl+BMGK5dluP5rl1+AW7rR6GKRZtdAAAAAElFTkSuQmCC"
             />
             <div>Start</div>
@@ -58,6 +69,14 @@
           <flow
             :onAnchorDragStart="handleClick"
             :shortcut="{ zoomIn: true, zoomOut: true }"
+            :grid="{
+              cell: 150,
+              type: 'line',
+              line: {
+                stroke: '#edf3f3',
+                lineWidth: 0.5
+              }
+            }"
           />
           <register-node
             name="flow-start"
@@ -70,6 +89,12 @@
             extend="flow-circle"
           />
         </div>
+        <div class="left-bar">
+          <detail-panel>
+            <node-panel> </node-panel>
+          </detail-panel>
+          <minimap :width="200" :height="200" />
+        </div>
       </div>
     </div>
   </v-g-editor>
@@ -78,12 +103,30 @@
 <script>
 import firebase, { db } from "../firebase";
 import "firebase/firestore";
-import VGEditor, { Flow, Item, ItemPanel, RegisterNode } from "vg-editor";
+import VGEditor, {
+  Flow,
+  Item,
+  ItemPanel,
+  RegisterNode,
+  Minimap,
+  DetailPanel,
+  NodePanel
+} from "vg-editor";
 import Menu from "../components/Menu";
 
 export default {
   name: "Project",
-  components: { Menu, VGEditor, Flow, Item, ItemPanel, RegisterNode },
+  components: {
+    Menu,
+    VGEditor,
+    Flow,
+    Item,
+    ItemPanel,
+    RegisterNode,
+    Minimap,
+    DetailPanel,
+    NodePanel
+  },
   computed: {
     user() {
       return firebase.auth().currentUser;
@@ -314,11 +357,17 @@ export default {
 }
 
 .sidebar {
+  width: 200px;
   padding: 5px;
   background-color: bisque;
 }
 
 .editor {
   width: 100%;
+}
+
+.left-bar {
+  width: 200px;
+  background-color: bisque;
 }
 </style>
