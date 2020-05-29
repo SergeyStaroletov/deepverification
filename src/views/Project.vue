@@ -5,7 +5,10 @@
     :onAfterCommandExecute="handleAfterCommand"
   >
     <div class="root">
-      <div class="header">{{ nodesCount }} : {{ edgesCount }}</div>
+      <div class="header">
+        {{ nodesCount }} : {{ edgesCount }}
+        <button @click="myClick">clik</button>
+      </div>
       <div class="editor-container">
         <div class="sidebar">
           <item-panel id="items">
@@ -25,6 +28,7 @@
             />
             <div>Start</div>
             <item
+              v-if="startNodeId === false"
               type="node"
               size="72*72"
               shape="flow-start"
@@ -37,6 +41,7 @@
             />
             <div>End</div>
             <item
+              v-if="endNodeId === false"
               type="node"
               size="72*72"
               shape="flow-end"
@@ -50,7 +55,10 @@
           </item-panel>
         </div>
         <div class="editor">
-          <flow :shortcut="{ zoomIn: true, zoomOut: true }" />
+          <flow
+            :onAnchorDragStart="handleClick"
+            :shortcut="{ zoomIn: true, zoomOut: true }"
+          />
           <register-node
             name="flow-start"
             :config="customNodes.flowStart"
@@ -85,6 +93,22 @@ export default {
     },
     edgesCount() {
       return this.data.edges.length;
+    },
+    startNodeId() {
+      let a = this.data.nodes.filter(e => e.shape === "flow-start");
+      if (a.length === 1) {
+        return a[0].id;
+      } else {
+        return false;
+      }
+    },
+    endNodeId() {
+      let a = this.data.nodes.filter(e => e.shape === "flow-end");
+      if (a.length === 1) {
+        return a[0].id;
+      } else {
+        return false;
+      }
     }
   },
   data() {
@@ -113,6 +137,16 @@ export default {
     };
   },
   methods: {
+    handleClick(e) {
+      console.log(e);
+    },
+    myClick() {
+      let k = this.$refs.vgEditor.propsAPI.find("07de7727");
+      this.$refs.vgEditor.propsAPI.find("07de7727").ifAnchorShow = true;
+      // console.log(k.getAllAnchors());
+      this.$refs.vgEditor.propsAPI.update();
+      console.log(this.$refs.vgEditor.propsAPI.find("07de7727"));
+    },
     update() {
       this.$refs.vgEditor.propsAPI.read(this.data);
     },
@@ -127,7 +161,7 @@ export default {
         });
     },
     handleBeforeCommand({ command }) {
-      // console.log("before command execute", command);
+      console.log("before command execute", command);
     },
     handleAfterCommand({ command }) {
       console.log("after command execute", command);
@@ -139,11 +173,29 @@ export default {
             .doc(command.addId)
             .set(command.addModel);
         } else if (command.type === "edge") {
-          db.collection("projects")
-            .doc(this.$route.params.id)
-            .collection("edges")
-            .doc(command.addId)
-            .set(command.addModel);
+          console.log("start end", {
+            command,
+            s: this.startNodeId,
+            e: this.endNodeId
+          });
+
+          if (
+            command.addModel.target === this.startNodeId ||
+            command.addModel.source === this.endNodeId
+          ) {
+            this.$notify({
+              title: "Внимание",
+              message: "Start и End необычные вершины)",
+              type: "warning"
+            });
+            command.back();
+          } else {
+            db.collection("projects")
+              .doc(this.$route.params.id)
+              .collection("edges")
+              .doc(command.addId)
+              .set(command.addModel);
+          }
         }
       } else if (command.name === "delete") {
         db.collection("projects")
@@ -194,14 +246,27 @@ export default {
             .doc(e.id)
             .set(e);
         });
-        this.data.edges.map(e => {
-          db.collection("projects")
-            .doc(this.$route.params.id)
-            .collection("edges")
-            .doc(e.id)
-            .set(e);
-        });
+        if (
+          command.name === "update" &&
+          command.updateModel.target === this.startNodeId
+        ) {
+          this.$notify({
+            title: "Внимание",
+            message: "Start и End необычные вершины)",
+            type: "warning"
+          });
+          command.back();
+        } else {
+          this.data.edges.map(e => {
+            db.collection("projects")
+              .doc(this.$route.params.id)
+              .collection("edges")
+              .doc(e.id)
+              .set(e);
+          });
+        }
       }
+
       this.updateLastEdit();
     }
   },
