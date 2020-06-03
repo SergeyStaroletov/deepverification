@@ -16,20 +16,22 @@
             <item
               type="node"
               size="144*72"
-              shape="flow-rect"
+              shape="flow-step"
               :model="{
                 // must have model property
-                label: 'Step'
+                label: 'Step',
+                color: '#1890FF'
               }"
               src="../img/step.svg"
             />
             <item
               type="node"
               size="144*72"
-              shape="flow-rhombus"
+              shape="flow-if"
               :model="{
                 // must have model property
-                label: 'If'
+                label: 'If',
+                color: '#5CDBD3'
               }"
               src="../img/if.svg"
             />
@@ -81,6 +83,16 @@
             name="flow-end"
             :config="customNodes.flowEnd"
             extend="flow-circle"
+          />
+          <register-node
+            name="flow-if"
+            :config="customNodes.flowIf"
+            extend="flow-rhombus"
+          />
+          <register-node
+            name="flow-step"
+            :config="customNodes.flowStep"
+            extend="flow-rect"
           />
         </div>
         <div class="left-bar">
@@ -188,21 +200,36 @@ export default {
             points: [[0.5, 0]],
             intersectBox: "circle"
           }
+        },
+        flowIf: {
+          name: "flowIf",
+          // anchor: {
+          //   points: [[0.5, 0]],
+          //   intersectBox: "rhombus"
+          // }
+        },
+        flowStep: {
+          name: "flowStep",
+          // anchor: {
+          //   points: [[0.5, 0]],
+          //   intersectBox: "rect"
+          // }
         }
       }
     };
   },
   methods: {
-    _downloadImage(data, filename = 'flowchart.png') {
-      const a = document.createElement('a')
-      a.href = data
-      a.download = filename
-      document.body.appendChild(a)
-      a.click()
+    _downloadImage(data, filename = "flowchart.png") {
+      const a = document.createElement("a");
+      a.href = data;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
     },
     downloadImage() {
-      const page = this.$refs.vgEditor.propsAPI.editor.getCurrentPage()
-      this._downloadImage(page.saveImage().toDataURL('image/png'))
+      const page = this.$refs.vgEditor.propsAPI.editor.getCurrentPage();
+      console.log(page.saveImage().toDataURL("image/png"));
+      this._downloadImage(page.saveImage().toDataURL("image/png"));
     },
     getSelected() {
       // console.log(this.$refs.vgEditor.propsAPI.getSelected()[0].getModel())
@@ -402,6 +429,8 @@ export default {
 
 .left-bar {
   width: 200px;
-  background-color: bisque;
+  background-color: #fafafa;
+  padding: 5px;
+  border-left: 1px solid #e6e9ed;
 }
 </style>
