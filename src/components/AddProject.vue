@@ -1,22 +1,11 @@
 <template>
-  <div>
-    <el-menu
-      :default-active="activeIndex"
-      class="el-menu-demo"
-      mode="horizontal"
-      @select="handleSelect"
+  <fragment>
+    <el-menu-item
+      index="3"
+      style="float: right;"
+      @click="dialogFormVisible = true"
+      >Новый проект</el-menu-item
     >
-      <el-menu-item index="1">deepverification</el-menu-item>
-      <el-submenu index="2" style="float: right;">
-        <template slot="title">
-          <el-avatar :size="32" :src="user.photoURL"></el-avatar>
-          {{ user.displayName }}
-        </template>
-        <el-menu-item index="2-3" @click="logout">Выйти</el-menu-item>
-      </el-submenu>
-      <AddProject></AddProject>
-    </el-menu>
-
     <el-dialog title="Новый проект" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form">
         <el-form-item prop="name" label="Название проекта">
@@ -30,16 +19,14 @@
         >
       </span>
     </el-dialog>
-  </div>
+  </fragment>
 </template>
 
 <script>
 import firebase, { db } from "../firebase";
-import AddProject from "./AddProject";
 
 export default {
-  name: "Menu",
-  components: { AddProject },
+  name: "AddProject",
   data: () => ({
     dialogFormVisible: false,
     form: {
@@ -49,27 +36,19 @@ export default {
       name: [
         {
           required: true,
-          message: "Пожалуйста, введите название проекта",
+          message: "Пожалуйста, введите название процесса",
           trigger: "blur"
         },
         {
           min: 3,
-          max: 50,
-          message: "Длинна должна быть от 3 до 50 символов",
+          max: 25,
+          message: "Длинна названия должна быть от 3 до 25 символов",
           trigger: "blur"
         }
       ]
     }
   }),
-  computed: {
-    user() {
-      return firebase.auth().currentUser;
-    }
-  },
   methods: {
-    logout() {
-      firebase.auth().signOut();
-    },
     createProject(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {

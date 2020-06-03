@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <Menu :user="this.user"></Menu>
+    <Menu></Menu>
 
     <template>
       <el-table :data="projects" stripe style="width: 100%">

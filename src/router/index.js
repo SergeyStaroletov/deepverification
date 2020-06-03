@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
+import Store from "../store/index";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Project from "../views/Project.vue";
@@ -26,7 +27,20 @@ const router = new Router({
     {
       path: "/project/:id",
       name: "project",
-      component: Project
+      component: Project,
+      beforeEnter: (to, from, next) => {
+        Store.dispatch("bindProject", { idProject: to.params.id });
+        Store.dispatch("bindProcesses", { idProject: to.params.id });
+        next();
+      }
+    },
+    {
+      path: "/project/:id/:process",
+      name: "project-tab",
+      component: Project,
+      beforeEnter: (to, from, next) => {
+        next();
+      }
     }
   ]
 });

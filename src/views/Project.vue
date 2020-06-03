@@ -5,27 +5,20 @@
     :onAfterCommandExecute="handleAfterCommand"
   >
     <div class="root">
-      <Menu></Menu>
+      <!--      <Menu></Menu>-->
+      <AddProcess></AddProcess>
       <div class="header">
-        {{nodesCount}} $ {{edgesCount}}
+        <router-link to="/">home</router-link>
+        <router-link to="/project/MRoxR6FjeIqKoULTJQ7l/fff">pro</router-link>
+        {{ nodesCount }} $ {{ edgesCount }} $ <button @click="rrr">gg</button>
       </div>
       <div class="editor-container">
         <div class="sidebar">
           <EditorItemPanel></EditorItemPanel>
         </div>
         <div class="editor">
-          <flow
-            :onAnchorDragStart="handleClick"
-            :shortcut="{ zoomIn: true, zoomOut: true }"
-            :grid="{
-              cell: 150,
-              type: 'line',
-              line: {
-                stroke: '#edf3f3',
-                lineWidth: 0.5
-              }
-            }"
-          />
+          <EditorTabs></EditorTabs>
+          <EditorProcess></EditorProcess>
         </div>
         <div class="left-bar">
           <EditorDetailPanel></EditorDetailPanel>
@@ -43,10 +36,16 @@ import VGEditor, { Flow } from "vg-editor";
 import EditorItemPanel from "../components/Editor/EditorItemPanel";
 import EditorMiniMap from "../components/Editor/EditorMiniMap";
 import EditorDetailPanel from "../components/Editor/EditorDetailPanel";
+import EditorProcess from "../components/Editor/EditorProcess";
+import EditorTabs from "../components/Editor/EditorTabs";
+import AddProcess from "../components/AddProcess";
 
 export default {
   name: "Project",
   components: {
+    AddProcess,
+    EditorTabs,
+    EditorProcess,
     EditorDetailPanel,
     EditorMiniMap,
     EditorItemPanel,
@@ -62,6 +61,9 @@ export default {
     },
     edgesCount() {
       return this.data.edges.length;
+    },
+    processes() {
+      return this.$store.state.processes;
     }
   },
   data() {
@@ -74,6 +76,9 @@ export default {
     };
   },
   methods: {
+    rrr() {
+      console.log(this.pr);
+    },
     _downloadImage(data, filename = "flowchart.png") {
       const a = document.createElement("a");
       a.href = data;
@@ -88,11 +93,6 @@ export default {
     getSelected() {
       // console.log(this.$refs.vgEditor.propsAPI.getSelected()[0].getModel())
       return this.$refs.vgEditor.propsAPI.getSelected()[0].getModel();
-    },
-    handleClick(e) {
-      // console.log(e);
-      // console.log(this.$refs.vgEditor.propsAPI.getSelected()[0].getModel())
-      console.log(this.$refs.vgEditor);
     },
     update() {
       this.$refs.vgEditor.propsAPI.read(this.data);

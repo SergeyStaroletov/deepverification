@@ -8,6 +8,7 @@ import "element-ui/lib/theme-chalk/index.css";
 import locale from "element-ui/lib/locale/lang/ru-RU";
 import firebase from "./firebase";
 import VueTimeago from "vue-timeago";
+import Fragment from 'vue-fragment'
 
 firebase.auth().onAuthStateChanged(function(user) {
   Vue.config.productionTip = false;
@@ -22,6 +23,7 @@ firebase.auth().onAuthStateChanged(function(user) {
       ru: require("date-fns/locale/ru")
     }
   });
+  Vue.use(Fragment.Plugin)
 
   new Vue({
     router,
