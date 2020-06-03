@@ -378,9 +378,10 @@ export default {
 }
 
 .sidebar {
-  width: 200px;
+  width: 100px;
   padding: 5px;
-  background-color: bisque;
+  background-color: #fafafa;
+  border-right: 1px solid #e6e9ed;
 }
 
 .editor {
