@@ -6,60 +6,13 @@
   >
     <div class="root">
       <div class="header">
+<!--        <Menu></Menu>-->
         {{ nodesCount }} : {{ edgesCount }}
-        <button @click="handleClick">clik</button>
         <button @click="downloadImage">скачать изображение</button>
       </div>
       <div class="editor-container">
         <div class="sidebar">
-          <item-panel id="items">
-            <item
-              type="node"
-              size="144*72"
-              shape="flow-step"
-              :model="{
-                // must have model property
-                label: 'Step',
-                color: '#1890FF'
-              }"
-              src="../img/step.svg"
-            />
-            <item
-              type="node"
-              size="144*72"
-              shape="flow-if"
-              :model="{
-                // must have model property
-                label: 'If',
-                color: '#5CDBD3'
-              }"
-              src="../img/if.svg"
-            />
-            <item
-              v-if="startNodeId === false"
-              type="node"
-              size="72*72"
-              shape="flow-start"
-              :model="{
-                // must have model property
-                color: '#FA8C16',
-                label: 'Start'
-              }"
-              src="../img/start.svg"
-            />
-            <item
-              v-if="endNodeId === false"
-              type="node"
-              size="72*72"
-              shape="flow-end"
-              :model="{
-                // must have model property
-                color: '#FA8C16',
-                label: 'End'
-              }"
-              src="../img/end.svg"
-            />
-          </item-panel>
+          <EditorItemPanel></EditorItemPanel>
         </div>
         <div class="editor">
           <flow
@@ -74,26 +27,6 @@
               }
             }"
           />
-          <register-node
-            name="flow-start"
-            :config="customNodes.flowStart"
-            extend="flow-circle"
-          />
-          <register-node
-            name="flow-end"
-            :config="customNodes.flowEnd"
-            extend="flow-circle"
-          />
-          <register-node
-            name="flow-if"
-            :config="customNodes.flowIf"
-            extend="flow-rhombus"
-          />
-          <register-node
-            name="flow-step"
-            :config="customNodes.flowStep"
-            extend="flow-rect"
-          />
         </div>
         <div class="left-bar">
           <detail-panel>
@@ -106,7 +39,6 @@
               </edge-panel>
             </template>
           </detail-panel>
-          {{ selectedItem.label }}
           <minimap :width="200" :height="200" />
         </div>
       </div>
@@ -130,17 +62,16 @@ import VGEditor, {
 } from "vg-editor";
 import Menu from "../components/Menu";
 import DetailForm from "../components/DetailForm";
+import EditorItemPanel from "../components/Editor/EditorItemPanel";
 
 export default {
   name: "Project",
   components: {
+    EditorItemPanel,
     DetailForm,
     Menu,
     VGEditor,
     Flow,
-    Item,
-    ItemPanel,
-    RegisterNode,
     Minimap,
     DetailPanel,
     NodePanel,
@@ -185,36 +116,6 @@ export default {
       data: {
         nodes: [],
         edges: []
-      },
-      customNodes: {
-        flowStart: {
-          name: "flowStart",
-          anchor: {
-            points: [[0.5, 1]],
-            intersectBox: "circle"
-          }
-        },
-        flowEnd: {
-          name: "flowEnd",
-          anchor: {
-            points: [[0.5, 0]],
-            intersectBox: "circle"
-          }
-        },
-        flowIf: {
-          name: "flowIf",
-          // anchor: {
-          //   points: [[0.5, 0]],
-          //   intersectBox: "rhombus"
-          // }
-        },
-        flowStep: {
-          name: "flowStep",
-          // anchor: {
-          //   points: [[0.5, 0]],
-          //   intersectBox: "rect"
-          // }
-        }
       }
     };
   },
