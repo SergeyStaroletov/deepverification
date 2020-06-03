@@ -12,7 +12,10 @@
       :visible.sync="dialogVisible"
       width="50%"
     >
-      <span>Ссылка на проект <b>https://deepverification.web.app/projects/{{project.id}}</b></span>
+      <span
+        >Ссылка на проект
+        <b>https://deepverification.web.app/projects/{{ project.id }}</b></span
+      >
     </el-dialog>
   </div>
 </template>
