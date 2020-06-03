@@ -8,6 +8,7 @@
       <div class="header">
         {{ nodesCount }} : {{ edgesCount }}
         <button @click="handleClick">clik</button>
+        <button @click="downloadImage">скачать изображение</button>
       </div>
       <div class="editor-container">
         <div class="sidebar">
@@ -192,6 +193,17 @@ export default {
     };
   },
   methods: {
+    _downloadImage(data, filename = 'flowchart.png') {
+      const a = document.createElement('a')
+      a.href = data
+      a.download = filename
+      document.body.appendChild(a)
+      a.click()
+    },
+    downloadImage() {
+      const page = this.$refs.vgEditor.propsAPI.editor.getCurrentPage()
+      this._downloadImage(page.saveImage().toDataURL('image/png'))
+    },
     getSelected() {
       // console.log(this.$refs.vgEditor.propsAPI.getSelected()[0].getModel())
       return this.$refs.vgEditor.propsAPI.getSelected()[0].getModel();
