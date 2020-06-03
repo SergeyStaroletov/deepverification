@@ -6,7 +6,7 @@
   >
     <div class="root">
       <div class="header">
-<!--        <Menu></Menu>-->
+        <!--        <Menu></Menu>-->
         {{ nodesCount }} : {{ edgesCount }}
         <button @click="downloadImage">скачать изображение</button>
       </div>
@@ -39,7 +39,7 @@
               </edge-panel>
             </template>
           </detail-panel>
-          <minimap :width="200" :height="200" />
+          <EditorMiniMap></EditorMiniMap>
         </div>
       </div>
     </div>
@@ -63,16 +63,17 @@ import VGEditor, {
 import Menu from "../components/Menu";
 import DetailForm from "../components/DetailForm";
 import EditorItemPanel from "../components/Editor/EditorItemPanel";
+import EditorMiniMap from "../components/Editor/EditorMiniMap";
 
 export default {
   name: "Project",
   components: {
+    EditorMiniMap,
     EditorItemPanel,
     DetailForm,
     Menu,
     VGEditor,
     Flow,
-    Minimap,
     DetailPanel,
     NodePanel,
     EdgePanel,
