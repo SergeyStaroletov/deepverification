@@ -7,7 +7,7 @@
     <div class="root">
       <div class="header">
         {{ nodesCount }} : {{ edgesCount }}
-        <!--        <button @click="myClick">clik</button>-->
+        <button @click="handleClick">clik</button>
       </div>
       <div class="editor-container">
         <div class="sidebar">
@@ -35,7 +35,18 @@
                 // must have model property
                 label: 'Step'
               }"
-              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAE4AAAAwCAYAAAC/gkysAAACT0lEQVRoQ+3bvy+EMRgH8KfImW6xSkTEnyAxMYm/wCSRYMJkETGxiVgMggmTyWQUE7dI/AlikFgNbuGCSi95L72mfZ/26etX8r3x3j699tPnad/hqoiIRg/08fsnzU4MUWtkgOrKfIlPR0AT0cMzNW8eqdbXQ2f3K2pRGbTxQZrZnqJ6rRdaZQKtD6KNK2rePtG5Gt7Xr9cL1A+0uKQxeJMn9KbmLvTL7jTV48LQygisXVJTbTa0Xh4DSIrA4R2R2mpovQS4FDc6AlySV6cx4GRuyDihG+AAJxUQxmGPA5xQQBiGjAOcUEAYhowDnFBAGFZZxp3u7dD86nrXMHzfFQ3MM/NxY8rm4fZX1r/dT2y7FMNvgysGyw2ae14GEBtbLJILk7Jobmw2nDsoM5jUzIjJzJhsCEHEAsf8RtEmG850ZA/MzrTiR3yYklJKXRB7W8jJLh9oNlxsSYZWMzfe12+oNO22uZCVwIVQ7MGFyoWDi0FwDxmuNLnnMSWbDeeWgwsRA8OVMlfWqSX85+B8p1YZXOqE3f00tIdxMNzzH8k4u5TszAllXu7rhW/SvgXgJv/re5yvVH2naWx2cdkQQsqF4KArf4/j9jhfOaXicHucOynf9uB7ZUrFstt/++FQ7EvFycehce9eXHxZZleJVxlczur9x1jACVcNcIATCgjDkHGAEwoIw5BxgBMKCMOQcYATCgjDkHGAEwoIw5BxgBMKCMPaGYe/66frtf+ujwsi6XDtCyK4kpQG17mShEtw8XBdl+BMGK5dluP5rl1+AW7rR6GKRZtdAAAAAElFTkSuQmCC"
+              src="https://gw.alipayobjects.com/zos/rmsportal/wHcJakkCXDrUUlNkNzSy.svg"
+            />
+            <div>If</div>
+            <item
+              type="node"
+              size="144*72"
+              shape="flow-rhombus"
+              :model="{
+                // must have model property
+                label: 'If'
+              }"
+              src="https://gw.alipayobjects.com/zos/rmsportal/SnWIktArriZRWdGCnGfK.svg"
             />
             <div>Start</div>
             <item
@@ -48,7 +59,7 @@
                 color: '#FA8C16',
                 label: 'Start'
               }"
-              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAE4AAAAwCAYAAAC/gkysAAACT0lEQVRoQ+3bvy+EMRgH8KfImW6xSkTEnyAxMYm/wCSRYMJkETGxiVgMggmTyWQUE7dI/AlikFgNbuGCSi95L72mfZ/26etX8r3x3j699tPnad/hqoiIRg/08fsnzU4MUWtkgOrKfIlPR0AT0cMzNW8eqdbXQ2f3K2pRGbTxQZrZnqJ6rRdaZQKtD6KNK2rePtG5Gt7Xr9cL1A+0uKQxeJMn9KbmLvTL7jTV48LQygisXVJTbTa0Xh4DSIrA4R2R2mpovQS4FDc6AlySV6cx4GRuyDihG+AAJxUQxmGPA5xQQBiGjAOcUEAYhowDnFBAGFZZxp3u7dD86nrXMHzfFQ3MM/NxY8rm4fZX1r/dT2y7FMNvgysGyw2ae14GEBtbLJILk7Jobmw2nDsoM5jUzIjJzJhsCEHEAsf8RtEmG850ZA/MzrTiR3yYklJKXRB7W8jJLh9oNlxsSYZWMzfe12+oNO22uZCVwIVQ7MGFyoWDi0FwDxmuNLnnMSWbDeeWgwsRA8OVMlfWqSX85+B8p1YZXOqE3f00tIdxMNzzH8k4u5TszAllXu7rhW/SvgXgJv/re5yvVH2naWx2cdkQQsqF4KArf4/j9jhfOaXicHucOynf9uB7ZUrFstt/++FQ7EvFycehce9eXHxZZleJVxlczur9x1jACVcNcIATCgjDkHGAEwoIw5BxgBMKCMOQcYATCgjDkHGAEwoIw5BxgBMKCMPaGYe/66frtf+ujwsi6XDtCyK4kpQG17mShEtw8XBdl+BMGK5dluP5rl1+AW7rR6GKRZtdAAAAAElFTkSuQmCC"
+              src="https://gw.alipayobjects.com/zos/rmsportal/ZnPxbVjKYADMYxkTQXRi.svg"
             />
             <div>End</div>
             <item
@@ -61,7 +72,7 @@
                 color: '#FA8C16',
                 label: 'End'
               }"
-              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAE4AAAAwCAYAAAC/gkysAAACT0lEQVRoQ+3bvy+EMRgH8KfImW6xSkTEnyAxMYm/wCSRYMJkETGxiVgMggmTyWQUE7dI/AlikFgNbuGCSi95L72mfZ/26etX8r3x3j699tPnad/hqoiIRg/08fsnzU4MUWtkgOrKfIlPR0AT0cMzNW8eqdbXQ2f3K2pRGbTxQZrZnqJ6rRdaZQKtD6KNK2rePtG5Gt7Xr9cL1A+0uKQxeJMn9KbmLvTL7jTV48LQygisXVJTbTa0Xh4DSIrA4R2R2mpovQS4FDc6AlySV6cx4GRuyDihG+AAJxUQxmGPA5xQQBiGjAOcUEAYhowDnFBAGFZZxp3u7dD86nrXMHzfFQ3MM/NxY8rm4fZX1r/dT2y7FMNvgysGyw2ae14GEBtbLJILk7Jobmw2nDsoM5jUzIjJzJhsCEHEAsf8RtEmG850ZA/MzrTiR3yYklJKXRB7W8jJLh9oNlxsSYZWMzfe12+oNO22uZCVwIVQ7MGFyoWDi0FwDxmuNLnnMSWbDeeWgwsRA8OVMlfWqSX85+B8p1YZXOqE3f00tIdxMNzzH8k4u5TszAllXu7rhW/SvgXgJv/re5yvVH2naWx2cdkQQsqF4KArf4/j9jhfOaXicHucOynf9uB7ZUrFstt/++FQ7EvFycehce9eXHxZZleJVxlczur9x1jACVcNcIATCgjDkHGAEwoIw5BxgBMKCMOQcYATCgjDkHGAEwoIw5BxgBMKCMPaGYe/66frtf+ujwsi6XDtCyK4kpQG17mShEtw8XBdl+BMGK5dluP5rl1+AW7rR6GKRZtdAAAAAElFTkSuQmCC"
+              src="https://gw.alipayobjects.com/zos/rmsportal/ZnPxbVjKYADMYxkTQXRi.svg"
             />
           </item-panel>
         </div>
@@ -91,8 +102,16 @@
         </div>
         <div class="left-bar">
           <detail-panel>
-            <node-panel> </node-panel>
+            <template v-slot="{ status }">
+              <node-panel :status="status">
+                <DetailForm></DetailForm>
+              </node-panel>
+              <edge-panel :status="status">
+                <DetailForm></DetailForm>
+              </edge-panel>
+            </template>
           </detail-panel>
+          {{ selectedItem.label }}
           <minimap :width="200" :height="200" />
         </div>
       </div>
@@ -110,13 +129,17 @@ import VGEditor, {
   RegisterNode,
   Minimap,
   DetailPanel,
-  NodePanel
+  NodePanel,
+  EdgePanel,
+  CanvasPanel
 } from "vg-editor";
 import Menu from "../components/Menu";
+import DetailForm from "../components/DetailForm";
 
 export default {
   name: "Project",
   components: {
+    DetailForm,
     Menu,
     VGEditor,
     Flow,
@@ -125,7 +148,9 @@ export default {
     RegisterNode,
     Minimap,
     DetailPanel,
-    NodePanel
+    NodePanel,
+    EdgePanel,
+    CanvasPanel
   },
   computed: {
     user() {
@@ -152,6 +177,11 @@ export default {
       } else {
         return false;
       }
+    },
+    selectedItem() {
+      // console.log(this.getSelected());
+      // return this.$refs.vgEditor.propsAPI.getSelected()[0].getModel();
+      return 1;
     }
   },
   data() {
@@ -180,8 +210,14 @@ export default {
     };
   },
   methods: {
+    getSelected() {
+      // console.log(this.$refs.vgEditor.propsAPI.getSelected()[0].getModel())
+      return this.$refs.vgEditor.propsAPI.getSelected()[0].getModel();
+    },
     handleClick(e) {
-      console.log(e);
+      // console.log(e);
+      // console.log(this.$refs.vgEditor.propsAPI.getSelected()[0].getModel())
+      console.log(this.$refs.vgEditor);
     },
     myClick() {
       let k = this.$refs.vgEditor.propsAPI.find("07de7727");
@@ -329,6 +365,9 @@ export default {
         .collection("edges")
     );
     this.$bind("project", db.collection("projects").doc(this.$route.params.id));
+
+    // Чтобы из корня был доступ к редактору
+    this.$root.propsAPI = this.$refs.vgEditor.propsAPI;
   },
   updated() {
     this.update();
