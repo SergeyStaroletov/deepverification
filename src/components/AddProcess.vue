@@ -1,7 +1,9 @@
 <template>
   <fragment>
-    <el-button @click="dialogFormVisible = true"
-      >Создать новый процесс</el-button
+    <el-menu-item
+      style="float: right;"
+      @click="dialogFormVisible = true"
+      >Новый процесс</el-menu-item
     >
     <el-dialog title="Новый процесс" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form">
@@ -26,7 +28,7 @@ export default {
   name: "AddProcess",
   data() {
     var validateUniqueProcessname = (rule, value, callback) => {
-      console.log(this.processes)
+      console.log(this.processes);
 
       let a = this.processes.some(e => e.id === value);
       console.log(a);

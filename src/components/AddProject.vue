@@ -1,7 +1,6 @@
 <template>
   <fragment>
     <el-menu-item
-      index="3"
       style="float: right;"
       @click="dialogFormVisible = true"
       >Новый проект</el-menu-item

@@ -1,45 +1,32 @@
 <template>
   <div>
     <el-menu
-      :default-active="activeIndex"
       class="el-menu-demo"
       mode="horizontal"
-      @select="handleSelect"
+      router
     >
-      <el-menu-item index="1">deepverification</el-menu-item>
-      <el-submenu index="2" style="float: right;">
+      <el-menu-item index="/">deepverification</el-menu-item>
+      <el-submenu style="float: right;">
         <template slot="title">
           <el-avatar :size="32" :src="user.photoURL"></el-avatar>
           {{ user.displayName }}
         </template>
-        <el-menu-item index="2-3" @click="logout">Выйти</el-menu-item>
+        <el-menu-item @click="logout">Выйти</el-menu-item>
       </el-submenu>
       <AddProject></AddProject>
+      <AddProcess v-if="displayAddProcces"></AddProcess>
     </el-menu>
-
-    <el-dialog title="Новый проект" :visible.sync="dialogFormVisible">
-      <el-form :model="form" :rules="rules" ref="form">
-        <el-form-item prop="name" label="Название проекта">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="cancelCreate('form')">Отмена</el-button>
-        <el-button type="primary" @click="createProject('form')"
-          >Создать</el-button
-        >
-      </span>
-    </el-dialog>
   </div>
 </template>
 
 <script>
 import firebase, { db } from "../firebase";
 import AddProject from "./AddProject";
+import AddProcess from "./AddProcess";
 
 export default {
   name: "Menu",
-  components: { AddProject },
+  components: { AddProcess, AddProject },
   data: () => ({
     dialogFormVisible: false,
     form: {
@@ -64,6 +51,15 @@ export default {
   computed: {
     user() {
       return firebase.auth().currentUser;
+    },
+    displayAddProcces() {
+      if (
+        this.$route.name === "project" ||
+        this.$route.name === "project-tab"
+      ) {
+        return true;
+      }
+      return false;
     }
   },
   methods: {

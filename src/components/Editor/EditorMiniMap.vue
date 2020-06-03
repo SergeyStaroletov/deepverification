@@ -14,6 +14,7 @@ export default {
 
 <style scoped>
 .minimap {
+  width: 200px;
   margin-top: auto;
   margin-bottom: 5px;
 }

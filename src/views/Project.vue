@@ -5,13 +5,10 @@
     :onAfterCommandExecute="handleAfterCommand"
   >
     <div class="root">
-      <!--      <Menu></Menu>-->
-      <AddProcess></AddProcess>
-      <div class="header">
-        <router-link to="/">home</router-link>
-        <router-link to="/project/MRoxR6FjeIqKoULTJQ7l/fff">pro</router-link>
-        {{ nodesCount }} $ {{ edgesCount }} $ <button @click="rrr">gg</button>
-      </div>
+      <Menu></Menu>
+      <!--      <div class="header">-->
+
+      <!--      </div>-->
       <div class="editor-container">
         <div class="sidebar">
           <EditorItemPanel></EditorItemPanel>
@@ -22,7 +19,7 @@
         </div>
         <div class="left-bar">
           <EditorDetailPanel></EditorDetailPanel>
-          <EditorMiniMap></EditorMiniMap>
+          <EditorMiniMap>{{ nodesCount }} $ {{ edgesCount }}</EditorMiniMap>
         </div>
       </div>
     </div>
@@ -39,6 +36,7 @@ import EditorDetailPanel from "../components/Editor/EditorDetailPanel";
 import EditorProcess from "../components/Editor/EditorProcess";
 import EditorTabs from "../components/Editor/EditorTabs";
 import AddProcess from "../components/AddProcess";
+import Menu from "../components/Menu";
 
 export default {
   name: "Project",
@@ -50,7 +48,8 @@ export default {
     EditorMiniMap,
     EditorItemPanel,
     VGEditor,
-    Flow
+    Flow,
+    Menu
   },
   computed: {
     user() {
@@ -258,14 +257,18 @@ export default {
 }
 
 .editor-container {
+  width: 100vw;
   height: 100%;
   display: flex;
   flex-direction: row;
 }
 
 .sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 100px;
-  padding: 5px;
+  /*padding: 5px;*/
   background-color: #fafafa;
   border-right: 1px solid #e6e9ed;
 }
@@ -275,9 +278,9 @@ export default {
 }
 
 .left-bar {
-  width: 200px;
+  width: 150px;
   background-color: #fafafa;
-  padding: 5px;
+  /*padding: 5px;*/
   border-left: 1px solid #e6e9ed;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <item-panel id="items">
+  <item-panel class="items">
     <register-node
       name="flow-start"
       :config="customNodes.flowStart"
@@ -21,6 +21,7 @@
       extend="flow-rect"
     />
     <item
+      class="item"
       type="node"
       size="144*72"
       shape="flow-step"
@@ -28,7 +29,7 @@
         label: 'Step',
         color: '#1890FF'
       }"
-      src="../img/step.svg"
+      src="/img/step.svg"
     />
     <item
       type="node"
@@ -38,7 +39,7 @@
         label: 'If',
         color: '#5CDBD3'
       }"
-      src="../img/if.svg"
+      src="/img/if.svg"
     />
     <item
       v-if="startNodeId === false"
@@ -49,7 +50,7 @@
         color: '#FA8C16',
         label: 'Start'
       }"
-      src="../img/start.svg"
+      src="/img/start.svg"
     />
     <item
       v-if="endNodeId === false"
@@ -60,7 +61,7 @@
         color: '#FA8C16',
         label: 'End'
       }"
-      src="../img/end.svg"
+      src="/img/end.svg"
     />
   </item-panel>
 </template>
@@ -143,4 +144,14 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.items {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100px;
+}
+.item {
+  width: 100%;
+}
+</style>
