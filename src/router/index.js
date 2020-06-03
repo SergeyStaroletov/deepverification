@@ -39,6 +39,20 @@ const router = new Router({
       name: "project-tab",
       component: Project,
       beforeEnter: (to, from, next) => {
+        Store.dispatch("bindProject", { idProject: to.params.id });
+        Store.dispatch("bindProcesses", { idProject: to.params.id });
+        Store.dispatch("bindProcess", {
+          idProject: to.params.id,
+          idProcess: to.params.process
+        });
+        Store.dispatch("bindNodes", {
+          idProject: to.params.id,
+          idProcess: to.params.process
+        });
+        Store.dispatch("bindEdges", {
+          idProject: to.params.id,
+          idProcess: to.params.process
+        });
         next();
       }
     }

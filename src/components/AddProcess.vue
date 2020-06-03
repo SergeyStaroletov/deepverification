@@ -11,7 +11,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancelCreate('form')">Отмена</el-button>
-        <el-button type="primary" @click="createProject('form')"
+        <el-button type="primary" @click="createProcess('form')"
           >Создать новый процесс</el-button
         >
       </span>
@@ -24,36 +24,59 @@ import firebase, { db } from "../firebase";
 
 export default {
   name: "AddProcess",
-  data: () => ({
-    dialogFormVisible: false,
-    form: {
-      name: ""
-    },
-    rules: {
-      name: [
-        {
-          required: true,
-          message: "Пожалуйста, введите название процесса",
-          trigger: "blur"
-        },
-        {
-          min: 3,
-          max: 25,
-          message: "Длинна названия должна быть от 3 до 25 символов",
-          trigger: "blur"
-        }
-      ]
+  data() {
+    var validateUniqueProcessname = (rule, value, callback) => {
+      console.log(this.processes)
+
+      let a = this.processes.some(e => e.id === value);
+      console.log(a);
+      if (a) {
+        callback(new Error("Пожалуйста, введите новое имя процесса"));
+      } else {
+        callback();
+      }
+    };
+    return {
+      dialogFormVisible: false,
+      form: {
+        name: ""
+      },
+      rules: {
+        name: [
+          {
+            validator: validateUniqueProcessname,
+            // message: "Такой процесс уже существует",
+            trigger: "blur"
+          },
+          {
+            required: true,
+            message: "Пожалуйста, введите название процесса",
+            trigger: "blur"
+          },
+          {
+            min: 3,
+            max: 25,
+            message: "Длинна названия должна быть от 3 до 25 символов",
+            trigger: "blur"
+          }
+        ]
+      }
+    };
+  },
+  computed: {
+    processes() {
+      return this.$store.state.processes;
     }
-  }),
+  },
   methods: {
-    createProject(formName) {
+    createProcess(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           db.collection("projects")
             .doc(this.$route.params.id)
             .collection("processes")
-            .add({
-              name: this.form.name,
+            .doc(this.form.name)
+            .set({
               type: "cyber"
             });
           this.form.name = "";

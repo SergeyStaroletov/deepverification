@@ -2,8 +2,9 @@
   <el-tabs type="card" @tab-click="handleClick">
     <el-tab-pane
       v-for="process in processes"
-      :label="process.name"
+      :label="process.id"
       :key="process.id"
+      :name="process.id"
     />
   </el-tabs>
 </template>
@@ -25,8 +26,10 @@ export default {
     }
   },
   methods: {
-    handleClick(tab, event) {
-      console.log(tab, event);
+    handleClick(tab) {
+      // this.$route.params.id
+      this.$router.push({ path: `/project/${this.$route.params.id}/${tab.name}` });
+      console.log(tab);
     }
   },
   mounted() {
@@ -37,14 +40,6 @@ export default {
         .doc(this.$route.params.id)
         .collection("process")
     );
-    // this.$bind(
-    //   "data.edges",
-    //   db
-    //     .collection("projects")
-    //     .doc(this.$route.params.id)
-    //     .collection("edges")
-    // );
-    // this.$bind("project", db.collection("projects").doc(this.$route.params.id));
   }
 };
 </script>

@@ -71,8 +71,8 @@ export default {
               db.collection("projects")
                 .doc(e.id)
                 .collection("processes")
-                .add({
-                  name: "main",
+                .doc("main")
+                .set({
                   type: "cyber"
                 });
             });
