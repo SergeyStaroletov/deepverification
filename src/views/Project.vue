@@ -5,10 +5,9 @@
     :onAfterCommandExecute="handleAfterCommand"
   >
     <div class="root">
+      <Menu></Menu>
       <div class="header">
-        <!--        <Menu></Menu>-->
-        {{ nodesCount }} : {{ edgesCount }}
-        <button @click="downloadImage">скачать изображение</button>
+        {{nodesCount}} $ {{edgesCount}}
       </div>
       <div class="editor-container">
         <div class="sidebar">
@@ -29,16 +28,7 @@
           />
         </div>
         <div class="left-bar">
-          <detail-panel>
-            <template v-slot="{ status }">
-              <node-panel :status="status">
-                <DetailForm></DetailForm>
-              </node-panel>
-              <edge-panel :status="status">
-                <DetailForm></DetailForm>
-              </edge-panel>
-            </template>
-          </detail-panel>
+          <EditorDetailPanel></EditorDetailPanel>
           <EditorMiniMap></EditorMiniMap>
         </div>
       </div>
@@ -49,35 +39,19 @@
 <script>
 import firebase, { db } from "../firebase";
 import "firebase/firestore";
-import VGEditor, {
-  Flow,
-  Item,
-  ItemPanel,
-  RegisterNode,
-  Minimap,
-  DetailPanel,
-  NodePanel,
-  EdgePanel,
-  CanvasPanel
-} from "vg-editor";
-import Menu from "../components/Menu";
-import DetailForm from "../components/DetailForm";
+import VGEditor, { Flow } from "vg-editor";
 import EditorItemPanel from "../components/Editor/EditorItemPanel";
 import EditorMiniMap from "../components/Editor/EditorMiniMap";
+import EditorDetailPanel from "../components/Editor/EditorDetailPanel";
 
 export default {
   name: "Project",
   components: {
+    EditorDetailPanel,
     EditorMiniMap,
     EditorItemPanel,
-    DetailForm,
-    Menu,
     VGEditor,
-    Flow,
-    DetailPanel,
-    NodePanel,
-    EdgePanel,
-    CanvasPanel
+    Flow
   },
   computed: {
     user() {
@@ -88,27 +62,6 @@ export default {
     },
     edgesCount() {
       return this.data.edges.length;
-    },
-    startNodeId() {
-      let a = this.data.nodes.filter(e => e.shape === "flow-start");
-      if (a.length === 1) {
-        return a[0].id;
-      } else {
-        return false;
-      }
-    },
-    endNodeId() {
-      let a = this.data.nodes.filter(e => e.shape === "flow-end");
-      if (a.length === 1) {
-        return a[0].id;
-      } else {
-        return false;
-      }
-    },
-    selectedItem() {
-      // console.log(this.getSelected());
-      // return this.$refs.vgEditor.propsAPI.getSelected()[0].getModel();
-      return 1;
     }
   },
   data() {
@@ -130,7 +83,6 @@ export default {
     },
     downloadImage() {
       const page = this.$refs.vgEditor.propsAPI.editor.getCurrentPage();
-      console.log(page.saveImage().toDataURL("image/png"));
       this._downloadImage(page.saveImage().toDataURL("image/png"));
     },
     getSelected() {
@@ -141,13 +93,6 @@ export default {
       // console.log(e);
       // console.log(this.$refs.vgEditor.propsAPI.getSelected()[0].getModel())
       console.log(this.$refs.vgEditor);
-    },
-    myClick() {
-      let k = this.$refs.vgEditor.propsAPI.find("07de7727");
-      this.$refs.vgEditor.propsAPI.find("07de7727").ifAnchorShow = true;
-      // console.log(k.getAllAnchors());
-      this.$refs.vgEditor.propsAPI.update();
-      console.log(this.$refs.vgEditor.propsAPI.find("07de7727"));
     },
     update() {
       this.$refs.vgEditor.propsAPI.read(this.data);
@@ -163,7 +108,7 @@ export default {
         });
     },
     handleBeforeCommand({ command }) {
-      console.log("before command execute", command);
+      // console.log("before command execute", command);
     },
     handleAfterCommand({ command }) {
       console.log("after command execute", command);
@@ -309,7 +254,7 @@ export default {
 .header {
   height: 60px;
   width: 100vw;
-  background-color: cornsilk;
+  /*background-color: cornsilk;*/
 }
 
 .editor-container {

@@ -1,5 +1,5 @@
 <template>
-  <minimap :width="200" :height="200" />
+  <minimap class="minimap" :width="200" :height="200" />
 </template>
 
 <script>
@@ -12,4 +12,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.minimap {
+  margin-top: auto;
+  margin-bottom: 5px;
+}
+</style>
