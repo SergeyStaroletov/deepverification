@@ -48,6 +48,11 @@ export default {
       ]
     }
   }),
+  computed: {
+    user() {
+      return firebase.auth().currentUser;
+    }
+  },
   methods: {
     createProject(formName) {
       this.$refs[formName].validate(valid => {
