@@ -13,7 +13,10 @@
         </div>
         <div class="editor">
           <EditorTabs></EditorTabs>
-          <EditorProcess></EditorProcess>
+          <EditorProcess v-show="process.root.type != 'ltl'"></EditorProcess>
+          <p v-if="process.root.type === 'ltl'">
+            задание требований
+          </p>
         </div>
         <div class="left-bar">
           <EditorDetailPanel></EditorDetailPanel>
@@ -81,16 +84,15 @@ export default {
     processes() {
       return this.$store.state.processes;
     },
-    process(){
+    process() {
       return this.$store.state.process;
     },
-    project(){
+    project() {
       return this.$store.state.project;
     }
   },
   data() {
-    return {
-    };
+    return {};
   },
   methods: {
     _downloadImage(data, filename = "flowchart.png") {
@@ -129,7 +131,9 @@ export default {
       if (command.name === "add") {
         if (command.type === "node") {
           db.collection("projects")
-            .doc(this.$route.params.id).collection('processes').doc(this.$route.params.process)
+            .doc(this.$route.params.id)
+            .collection("processes")
+            .doc(this.$route.params.process)
             .collection("nodes")
             .doc(command.addId)
             .set(command.addModel);
@@ -152,7 +156,9 @@ export default {
             command.back();
           } else {
             db.collection("projects")
-              .doc(this.$route.params.id).collection('processes').doc(this.$route.params.process)
+              .doc(this.$route.params.id)
+              .collection("processes")
+              .doc(this.$route.params.process)
               .collection("edges")
               .doc(command.addId)
               .set(command.addModel);
@@ -160,7 +166,9 @@ export default {
         }
       } else if (command.name === "delete") {
         db.collection("projects")
-          .doc(this.$route.params.id).collection('processes').doc(this.$route.params.process)
+          .doc(this.$route.params.id)
+          .collection("processes")
+          .doc(this.$route.params.process)
           .collection("nodes")
           .doc(command.itemIds[0])
           .delete()
@@ -176,7 +184,9 @@ export default {
             e.target === command.itemIds[0]
           ) {
             db.collection("projects")
-              .doc(this.$route.params.id).collection('processes').doc(this.$route.params.process)
+              .doc(this.$route.params.id)
+              .collection("processes")
+              .doc(this.$route.params.process)
               .collection("edges")
               .doc(e.id)
               .delete()
@@ -189,7 +199,9 @@ export default {
           }
         });
         db.collection("projects")
-          .doc(this.$route.params.id).collection('processes').doc(this.$route.params.process)
+          .doc(this.$route.params.id)
+          .collection("processes")
+          .doc(this.$route.params.process)
           .collection("edges")
           .doc(command.itemIds[0])
           .delete()
@@ -202,7 +214,9 @@ export default {
       } else {
         this.process.nodes.map(e => {
           db.collection("projects")
-            .doc(this.$route.params.id).collection('processes').doc(this.$route.params.process)
+            .doc(this.$route.params.id)
+            .collection("processes")
+            .doc(this.$route.params.process)
             .collection("nodes")
             .doc(e.id)
             .set(e);
@@ -220,7 +234,9 @@ export default {
         } else {
           this.process.edges.map(e => {
             db.collection("projects")
-              .doc(this.$route.params.id).collection('processes').doc(this.$route.params.process)
+              .doc(this.$route.params.id)
+              .collection("processes")
+              .doc(this.$route.params.process)
               .collection("edges")
               .doc(e.id)
               .set(e);

@@ -9,7 +9,7 @@
         lineWidth: 0.5
       }
     }"
-  />
+  ></flow>
 </template>
 
 <script>

@@ -65,7 +65,16 @@ export default {
               lastEdit: Date.now()
             })
             .then(e => {
-              console.log(e);
+              let now = Date.now();
+              db.collection("projects")
+                .doc(e.id)
+                .collection("processes")
+                .doc("Требования")
+                .set({
+                  name: "Требования",
+                  type: "ltl",
+                  created: now - 1
+                });
               db.collection("projects")
                 .doc(e.id)
                 .collection("processes")
@@ -73,7 +82,7 @@ export default {
                 .set({
                   name: "main",
                   type: "cyber",
-                  created: Date.now()
+                  created: now
                 });
             });
 
