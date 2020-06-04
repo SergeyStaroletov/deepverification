@@ -5,9 +5,13 @@
       <el-table :data="projects" stripe style="width: 100%">
         <el-table-column prop="name" label="Название">
           <template slot-scope="scope">
-            <router-link :to="'/project/' + projects[scope.$index].id">
-              {{ projects[scope.$index].name }}
-            </router-link>
+            <el-button
+              @click.native.prevent="
+                $router.push({ path: '/project/' + projects[scope.$index].id })
+              "
+              type="text"
+              >{{ projects[scope.$index].name }}</el-button
+            >
           </template>
         </el-table-column>
         <el-table-column prop="author" label="Владелец">
