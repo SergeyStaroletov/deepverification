@@ -57,6 +57,7 @@ export default {
           db.collection("projects")
             .add({
               name: this.form.name,
+              collaborators: [],
               author: {
                 displayName: this.user.displayName,
                 uid: this.user.uid

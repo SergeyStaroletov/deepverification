@@ -31,15 +31,25 @@ export default {
   props: ["project"],
   methods: {
     deleteProject(id) {
-      db.collection("projects")
-        .doc(this.project.id)
-        .delete()
-        .then(function() {
-          console.log("Document successfully deleted!");
-        })
-        .catch(function(error) {
-          console.error("Error removing document: ", error);
-        });
+      if (this.project.author.uid === firebase.auth().currentUser.uid) {
+        db.collection("projects")
+          .doc(this.project.id)
+          .delete()
+          .then(function() {
+            console.log("Document successfully deleted!");
+          })
+          .catch(function(error) {
+            console.error("Error removing document: ", error);
+          });
+      } else {
+        let newCollaborators = this.project.collaborators.filter(
+          e => e != firebase.auth().currentUser.uid
+        );
+        console.log(newCollaborators, firebase.auth().currentUser);
+        db.collection("projects")
+          .doc(this.project.id)
+          .update({ collaborators: newCollaborators });
+      }
       this.dialogVisible = false;
     }
   }

@@ -10,8 +10,13 @@
         </template>
         <el-menu-item @click="logout">Выйти</el-menu-item>
       </el-submenu>
-      <AddProject></AddProject>
+      <AddProject v-if="this.$route.name === 'home'"></AddProject>
       <AddProcess v-if="displayAddProcess"></AddProcess>
+      <ShareProject
+        v-if="displayAddProcess"
+        :project="project"
+        menu="true"
+      ></ShareProject>
     </el-menu>
   </div>
 </template>
@@ -20,10 +25,11 @@
 import firebase, { db } from "../firebase";
 import AddProject from "./AddProject";
 import AddProcess from "./AddProcess";
+import ShareProject from "./ShareProject";
 
 export default {
   name: "Menu",
-  components: { AddProcess, AddProject },
+  components: { ShareProject, AddProcess, AddProject },
   computed: {
     user() {
       return firebase.auth().currentUser;

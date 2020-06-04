@@ -4,6 +4,9 @@ import Store from "../store/index";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Project from "../views/Project.vue";
+import Share from "../views/Share.vue";
+import firebase, { db } from "../firebase";
+import "firebase/firestore";
 
 Vue.use(Router);
 
@@ -17,12 +20,45 @@ const router = new Router({
       component: Home,
       meta: {
         requiresAuth: true
+      },
+      beforeEnter: (to, from, next) => {
+        Store.dispatch("bindProjectsI");
+        Store.dispatch("bindProjectsC");
+        next();
       }
     },
     {
       path: "/login",
       name: "login",
       component: Login
+    },
+    {
+      path: "/share/:id",
+      name: "share",
+      component: Share,
+      beforeEnter: (to, from, next) => {
+        db.collection("projects")
+          .doc(to.params.id)
+          .get()
+          .then(snapshot => {
+            const project = snapshot.data();
+            if (project.author.uid != firebase.auth().currentUser.uid) {
+              if (
+                !project.collaborators.some(
+                  e => firebase.auth().currentUser.uid
+                )
+              ) {
+                let newCollaborators = project.collaborators;
+                newCollaborators.push(firebase.auth().currentUser.uid);
+                db.collection("projects")
+                  .doc(to.params.id)
+                  .update({ collaborators: newCollaborators });
+              }
+            }
+          });
+
+        next({ path: `/project/${to.params.id}/main` });
+      }
     },
     {
       path: "/project/:id",
@@ -39,7 +75,6 @@ const router = new Router({
       name: "project-tab",
       component: Project,
       beforeEnter: (to, from, next) => {
-        console.log(111111111)
         Store.dispatch("bindProject", { idProject: to.params.id });
         Store.dispatch("bindProcesses", { idProject: to.params.id });
         Store.dispatch("bindProcess", {

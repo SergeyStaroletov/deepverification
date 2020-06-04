@@ -1,7 +1,6 @@
 <template>
   <div class="home">
     <Menu></Menu>
-
     <template>
       <el-table :data="projects" stripe style="width: 100%">
         <el-table-column prop="name" label="Название">
@@ -39,51 +38,23 @@
 </template>
 
 <script>
-// @ is an alias to /src
 import firebase, { db } from "../firebase";
 import "firebase/firestore";
 import Menu from "../components/Menu";
 import DeleteProject from "../components/DeleteProject";
 import ShareProject from "../components/ShareProject";
 
-const projects = db.collection("projects");
-
 export default {
   name: "home",
   computed: {
     user() {
       return firebase.auth().currentUser;
+    },
+    projects() {
+      return this.$store.state.projects_i.concat(this.$store.state.projects_c);
     }
   },
   components: { ShareProject, DeleteProject, Menu },
-  methods: {
-    createProject() {
-      if (this.form.name) {
-        db.collection("projects").add({
-          name: this.form.name,
-          author: { displayName: this.user.displayName, uid: this.user.uid },
-          lastEdit: Date.now()
-        });
-        this.form.name = null;
-      } else {
-        this.$notify.error({
-          title: "Ошибка",
-          message: "Новый проект должен иметь название"
-        });
-      }
-    }
-  },
-  data: () => ({
-    projects: [],
-    form: { name: null }
-  }),
-  mounted() {
-    this.$bind(
-      "projects",
-      projects.where("author.uid", "==", this.user.uid)
-    ).then(projects => {
-      this.projects = projects;
-    });
-  }
+  methods: {}
 };
 </script>

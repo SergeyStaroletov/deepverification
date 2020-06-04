@@ -1,15 +1,17 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { vuexfireMutations, firestoreAction } from "vuexfire";
-import { db } from "../firebase";
+import firebase, { db } from "../firebase";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     project: {
-      name: ''
+      name: ""
     },
+    projects_i: {},
+    projects_c: {},
     processes: null,
     process: {
       nodes: {},
@@ -19,15 +21,33 @@ export default new Vuex.Store({
   },
   mutations: vuexfireMutations,
   actions: {
+    bindProjectsI: firestoreAction(({ bindFirestoreRef }) => {
+      return bindFirestoreRef(
+        "projects_i",
+        db
+          .collection("projects")
+          .where("author.uid", "==", firebase.auth().currentUser.uid)
+      );
+    }),
+    bindProjectsC: firestoreAction(({ bindFirestoreRef }) => {
+      return bindFirestoreRef(
+        "projects_c",
+        db
+          .collection("projects")
+          .where(
+            "collaborators",
+            "array-contains",
+            firebase.auth().currentUser.uid
+          )
+      );
+    }),
     bindProject: firestoreAction(({ bindFirestoreRef }, payload) => {
-      // return the promise returned by `bindFirestoreRef`
       return bindFirestoreRef(
         "project",
         db.collection("projects").doc(payload.idProject)
       );
     }),
     bindProcesses: firestoreAction(({ bindFirestoreRef }, payload) => {
-      // return the promise returned by `bindFirestoreRef`
       return bindFirestoreRef(
         "processes",
         db
@@ -37,7 +57,6 @@ export default new Vuex.Store({
       );
     }),
     bindProcess: firestoreAction(({ bindFirestoreRef }, payload) => {
-      // return the promise returned by `bindFirestoreRef`
       return bindFirestoreRef(
         "process.root",
         db
@@ -48,7 +67,6 @@ export default new Vuex.Store({
       );
     }),
     bindNodes: firestoreAction(({ bindFirestoreRef }, payload) => {
-      // return the promise returned by `bindFirestoreRef`
       return bindFirestoreRef(
         "process.nodes",
         db
@@ -60,7 +78,6 @@ export default new Vuex.Store({
       );
     }),
     bindEdges: firestoreAction(({ bindFirestoreRef }, payload) => {
-      // return the promise returned by `bindFirestoreRef`
       return bindFirestoreRef(
         "process.edges",
         db
