@@ -25,9 +25,10 @@ export default {
   },
   methods: {
     change(e) {
+      let type = this.formModel.type === "node" ? "nodes" : "edges";
       db.collection("projects")
         .doc(this.$route.params.id)
-        .collection("nodes")
+        .collection(type)
         .doc(this.formModel.id)
         .update({ label: this.formModel.label });
       console.log(e);
