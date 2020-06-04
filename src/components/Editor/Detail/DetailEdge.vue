@@ -11,37 +11,37 @@ import firebase, { db } from "../../../firebase";
 import "firebase/firestore";
 
 export default {
-  name: "DetailNode",
+  name: "DetailEdge",
   data() {
     return {
       formModel: {}
     };
   },
   computed: {
+    edges() {
+      return this.$store.state.process.edges;
+    },
+    nodes() {
+      return this.$store.state.process.nodes;
+    },
     visibleLabelEdit() {
-      return this.formModel.shape === "flow-if" ||
-        this.formModel.shape === "flow-start" ||
-        this.formModel.shape === "flow-end"
-        ? false
-        : true;
+      let nodes_if = this.nodes.filter(e => e.shape === "flow-if");
+      return nodes_if.some(e => this.formModel.source === e.id);
     }
   },
   created() {
     const formModel = this.$root.propsAPI.getSelected()[0].getModel();
-    // // const formModel = this.root.$refs.vgEditor.propsAPI.getSelected()[0].getModel();
-    this.formModel = Object.assign({}, { shape: "flow-smooth" }, formModel);
+    this.formModel = Object.assign({}, {}, formModel);
   },
   methods: {
     change(e) {
-      let type = this.formModel.type === "node" ? "nodes" : "edges";
       db.collection("projects")
         .doc(this.$route.params.id)
         .collection("processes")
         .doc(this.$route.params.process)
-        .collection(type)
+        .collection("edges")
         .doc(this.formModel.id)
         .update({ label: this.formModel.label });
-      console.log(this.formModel);
     }
   }
 };

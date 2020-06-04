@@ -28,6 +28,8 @@ export default {
       let type = this.formModel.type === "node" ? "nodes" : "edges";
       db.collection("projects")
         .doc(this.$route.params.id)
+        .collection("processes")
+        .doc(this.$route.params.process)
         .collection(type)
         .doc(this.formModel.id)
         .update({ label: this.formModel.label });

@@ -5,10 +5,10 @@
         <DetailNode />
       </node-panel>
       <edge-panel :status="status">
-        <DetailForm></DetailForm>
+        <DetailEdge />
       </edge-panel>
       <canvas-panel :status="status">
-        <DetailProject></DetailProject>
+        <DetailProject />
       </canvas-panel>
     </template>
   </detail-panel>
@@ -19,9 +19,11 @@ import DetailForm from "../DetailForm";
 import { DetailPanel, NodePanel, EdgePanel, CanvasPanel } from "vg-editor";
 import DetailProject from "./Detail/DetailProject";
 import DetailNode from "./Detail/DetailNode";
+import DetailEdge from "./Detail/DetailEdge";
 export default {
   name: "EditorDetailPanel",
   components: {
+    DetailEdge,
     DetailNode,
     DetailProject,
     DetailPanel,
