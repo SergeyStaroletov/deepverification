@@ -242,7 +242,11 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+body {
+  overflow: hidden;
+}
+
 .root {
   height: 100vh;
   width: 100vw;
@@ -258,29 +262,33 @@ export default {
 
 .editor-container {
   width: 100vw;
-  height: 100%;
+  height: calc(100vh - 61px);
   display: flex;
   flex-direction: row;
 }
 
 .sidebar {
+  background-color: darkturquoise;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100px;
-  /*padding: 5px;*/
+  height: calc(100vh - 61px);
+  padding: 5px;
   background-color: #fafafa;
   border-right: 1px solid #e6e9ed;
 }
 
 .editor {
-  width: 100%;
+  width: calc(100vw - 200px - 100px);
+  height: calc(100vh - 61px - 40px);
 }
 
 .left-bar {
-  width: 150px;
+  width: 200px;
+  height: calc(100vh - 61px);
   background-color: #fafafa;
-  /*padding: 5px;*/
+  padding: 5px;
   border-left: 1px solid #e6e9ed;
 }
 </style>

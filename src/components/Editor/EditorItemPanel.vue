@@ -152,6 +152,6 @@ export default {
   width: 100px;
 }
 .item {
-  width: 100%;
+  width: 100px;
 }
 </style>
