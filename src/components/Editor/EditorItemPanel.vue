@@ -20,6 +20,11 @@
       :config="customNodes.flowStep"
       extend="flow-rect"
     />
+    <register-node
+      name="flow-label"
+      :config="customNodes.flowLabel"
+      extend="flow-rect"
+    />
     <item
       class="item"
       type="node"
@@ -62,6 +67,16 @@
         label: 'End'
       }"
       src="/img/end.svg"
+    />
+    <item
+      class="item"
+      type="node"
+      size="70*30"
+      shape="flow-label"
+      :model="{
+        label: 'Label'
+      }"
+      src="/img/label.svg"
     />
   </item-panel>
 </template>
@@ -119,6 +134,86 @@ export default {
         },
         flowStep: {
           name: "flowStep"
+        },
+        flowLabel: {
+          name: "flowLabel",
+          // options: {
+          //   style: {
+          //     opacity: true,
+          //     fillOpacity: true,
+          //     color: "#ef0b0b"
+          //   }
+          // },
+          anchor: {
+            points: []
+          },
+          draw(item) {
+            const group = item.getGraphicGroup();
+            const model = item.getModel();
+            let str = "";
+            for (let i = 0; i < model.label.length; i++) {
+              str = str + "  ";
+            }
+            group.addShape("text", {
+              attrs: {
+                x: 0,
+                y: 0,
+                fill: "#333",
+                hover: "#333",
+                text: model.label
+              }
+            });
+            return group.addShape("text", {
+              attrs: {
+                x: 0,
+                y: 0,
+                text: str
+              }
+            });
+
+            // const group = item.getGraphicGroup();
+            // const model = item.getModel();
+            // group.addShape("text", {
+            //   attrs: {
+            //     x: 0,
+            //     y: 0,
+            //     fill: "#333",
+            //     text:
+            //       "I am a custom node, \ncomposed by the red rect and the blue point"
+            //   }
+            // });
+            // group.addShape("text", {
+            //   attrs: {
+            //     x: 0,
+            //     y: 0,
+            //     fill: "#333",
+            //     text:
+            //       " (" +
+            //       model.x +
+            //       ", " +
+            //       model.y +
+            //       ") \n the origin is the coordinate of the group",
+            //     textBaseline: "top"
+            //   }
+            // });
+            // group.addShape("circle", {
+            //   attrs: {
+            //     x: 0,
+            //     y: 0,
+            //     r: 4,
+            //     fill: "blue"
+            //   }
+            // });
+            // return group.addShape("rect", {
+            //   attrs: {
+            //     x: 0,
+            //     y: 0,
+            //     width: 100,
+            //     height: 100,
+            //     stroke: "red"
+            //   }
+            // });
+          }
         }
       }
     };
