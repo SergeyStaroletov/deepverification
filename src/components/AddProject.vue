@@ -72,7 +72,8 @@ export default {
                 .doc("main")
                 .set({
                   name: "main",
-                  type: "cyber"
+                  type: "cyber",
+                  created: Date.now()
                 });
             });
 

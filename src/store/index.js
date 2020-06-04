@@ -54,6 +54,7 @@ export default new Vuex.Store({
           .collection("projects")
           .doc(payload.idProject)
           .collection("processes")
+          .orderBy("created")
       );
     }),
     bindProcess: firestoreAction(({ bindFirestoreRef }, payload) => {

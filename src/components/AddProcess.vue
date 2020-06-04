@@ -77,7 +77,8 @@ export default {
             .collection("processes")
             .add({
               type: "cyber",
-              name: this.form.name
+              name: this.form.name,
+              created: Date.now()
             });
           this.form.name = "";
           this.dialogFormVisible = false;
