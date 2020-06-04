@@ -7,7 +7,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    project: null,
+    project: {
+      name: ''
+    },
     processes: null,
     process: {
       nodes: {},

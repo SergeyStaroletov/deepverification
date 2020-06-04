@@ -2,7 +2,7 @@
   <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
     <el-tab-pane
       v-for="process in processes"
-      :label="process.id"
+      :label="process.name"
       :key="process.id"
       :name="process.id"
     />

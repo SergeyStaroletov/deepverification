@@ -1,8 +1,6 @@
 <template>
   <fragment>
-    <el-menu-item
-      style="float: right;"
-      @click="dialogFormVisible = true"
+    <el-menu-item style="float: right;" @click="dialogFormVisible = true"
       >Новый проект</el-menu-item
     >
     <el-dialog title="Новый проект" :visible.sync="dialogFormVisible">
@@ -72,6 +70,7 @@ export default {
                 .collection("processes")
                 .doc("main")
                 .set({
+                  name: "main",
                   type: "cyber"
                 });
             });

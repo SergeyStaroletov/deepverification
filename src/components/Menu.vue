@@ -3,7 +3,7 @@
     <el-menu class="el-menu-demo" mode="horizontal" router>
       <el-menu-item index="/">deepverification</el-menu-item>
       <el-menu-item v-if="displayAddProcces">{{ project.name }}</el-menu-item>
-      <el-submenu style="float: right;">
+      <el-submenu index="3" style="float: right;">
         <template slot="title">
           <el-avatar :size="32" :src="user.photoURL"></el-avatar>
           {{ user.displayName }}

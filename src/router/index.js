@@ -39,6 +39,7 @@ const router = new Router({
       name: "project-tab",
       component: Project,
       beforeEnter: (to, from, next) => {
+        console.log(111111111)
         Store.dispatch("bindProject", { idProject: to.params.id });
         Store.dispatch("bindProcesses", { idProject: to.params.id });
         Store.dispatch("bindProcess", {

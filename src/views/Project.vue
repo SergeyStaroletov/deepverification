@@ -51,6 +51,24 @@ export default {
     Flow,
     Menu
   },
+  beforeRouteUpdate(to, from, next) {
+    // todo в router/index.js есть такой же кусок кода, возможно стоит выкинуть там его
+    this.$store.dispatch("bindProject", { idProject: to.params.id });
+    this.$store.dispatch("bindProcesses", { idProject: to.params.id });
+    this.$store.dispatch("bindProcess", {
+      idProject: to.params.id,
+      idProcess: to.params.process
+    });
+    this.$store.dispatch("bindNodes", {
+      idProject: to.params.id,
+      idProcess: to.params.process
+    });
+    this.$store.dispatch("bindEdges", {
+      idProject: to.params.id,
+      idProcess: to.params.process
+    });
+    next();
+  },
   computed: {
     user() {
       return firebase.auth().currentUser;

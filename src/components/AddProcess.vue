@@ -1,8 +1,6 @@
 <template>
   <fragment>
-    <el-menu-item
-      style="float: right;"
-      @click="dialogFormVisible = true"
+    <el-menu-item style="float: right;" @click="dialogFormVisible = true"
       >Новый процесс</el-menu-item
     >
     <el-dialog title="Новый процесс" :visible.sync="dialogFormVisible">
@@ -77,9 +75,9 @@ export default {
           db.collection("projects")
             .doc(this.$route.params.id)
             .collection("processes")
-            .doc(this.form.name)
-            .set({
-              type: "cyber"
+            .add({
+              type: "cyber",
+              name: this.form.name
             });
           this.form.name = "";
           this.dialogFormVisible = false;
