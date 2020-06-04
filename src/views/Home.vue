@@ -2,7 +2,21 @@
   <div class="home">
     <Menu></Menu>
     <template>
-      <el-table :data="projects" stripe style="width: 100%">
+      <el-table
+        :data="
+          projects.sort((a, b) => {
+            if (a.lastEdit < b.lastEdit) {
+              return 1;
+            }
+            if (a.lastEdit > b.lastEdit) {
+              return -1;
+            }
+            return 0;
+          })
+        "
+        stripe
+        style="width: 100%"
+      >
         <el-table-column prop="name" label="Название">
           <template slot-scope="scope">
             <el-button
