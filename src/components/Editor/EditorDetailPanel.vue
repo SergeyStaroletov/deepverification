@@ -2,7 +2,7 @@
   <detail-panel>
     <template v-slot="{ status }">
       <node-panel :status="status">
-        <DetailForm></DetailForm>
+        <DetailNode />
       </node-panel>
       <edge-panel :status="status">
         <DetailForm></DetailForm>
@@ -18,9 +18,11 @@
 import DetailForm from "../DetailForm";
 import { DetailPanel, NodePanel, EdgePanel, CanvasPanel } from "vg-editor";
 import DetailProject from "./Detail/DetailProject";
+import DetailNode from "./Detail/DetailNode";
 export default {
   name: "EditorDetailPanel",
   components: {
+    DetailNode,
     DetailProject,
     DetailPanel,
     NodePanel,
