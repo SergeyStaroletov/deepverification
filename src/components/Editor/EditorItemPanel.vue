@@ -91,21 +91,21 @@ export default {
   components: { Item, ItemPanel, RegisterNode },
   mounted() {
     // todo кажется монтировать биндинг к firebase в каждом компоненте не очень хорошо
-    this.$bind(
-      "data.nodes",
-      db
-        .collection("projects")
-        .doc(this.$route.params.id)
-        .collection("nodes")
-    );
-    this.$bind(
-      "data.edges",
-      db
-        .collection("projects")
-        .doc(this.$route.params.id)
-        .collection("edges")
-    );
-    this.$bind("project", db.collection("projects").doc(this.$route.params.id));
+    // this.$bind(
+    //   "data.nodes",
+    //   db
+    //     .collection("projects")
+    //     .doc(this.$route.params.id)
+    //     .collection("nodes")
+    // );
+    // this.$bind(
+    //   "data.edges",
+    //   db
+    //     .collection("projects")
+    //     .doc(this.$route.params.id)
+    //     .collection("edges")
+    // );
+    // this.$bind("project", db.collection("projects").doc(this.$route.params.id));
   },
   data() {
     return {
@@ -137,13 +137,6 @@ export default {
         },
         flowLabel: {
           name: "flowLabel",
-          // options: {
-          //   style: {
-          //     opacity: true,
-          //     fillOpacity: true,
-          //     color: "#ef0b0b"
-          //   }
-          // },
           anchor: {
             points: []
           },
@@ -170,49 +163,6 @@ export default {
                 text: str
               }
             });
-
-            // const group = item.getGraphicGroup();
-            // const model = item.getModel();
-            // group.addShape("text", {
-            //   attrs: {
-            //     x: 0,
-            //     y: 0,
-            //     fill: "#333",
-            //     text:
-            //       "I am a custom node, \ncomposed by the red rect and the blue point"
-            //   }
-            // });
-            // group.addShape("text", {
-            //   attrs: {
-            //     x: 0,
-            //     y: 0,
-            //     fill: "#333",
-            //     text:
-            //       " (" +
-            //       model.x +
-            //       ", " +
-            //       model.y +
-            //       ") \n the origin is the coordinate of the group",
-            //     textBaseline: "top"
-            //   }
-            // });
-            // group.addShape("circle", {
-            //   attrs: {
-            //     x: 0,
-            //     y: 0,
-            //     r: 4,
-            //     fill: "blue"
-            //   }
-            // });
-            // return group.addShape("rect", {
-            //   attrs: {
-            //     x: 0,
-            //     y: 0,
-            //     width: 100,
-            //     height: 100,
-            //     stroke: "red"
-            //   }
-            // });
           }
         }
       }
@@ -220,7 +170,7 @@ export default {
   },
   computed: {
     startNodeId() {
-      let a = this.data.nodes.filter(e => e.shape === "flow-start");
+      let a = this.process.nodes.filter(e => e.shape === "flow-start");
       if (a.length === 1) {
         return a[0].id;
       } else {
@@ -228,12 +178,15 @@ export default {
       }
     },
     endNodeId() {
-      let a = this.data.nodes.filter(e => e.shape === "flow-end");
+      let a = this.process.nodes.filter(e => e.shape === "flow-end");
       if (a.length === 1) {
         return a[0].id;
       } else {
         return false;
       }
+    },
+    process() {
+      return this.$store.state.process;
     }
   }
 };

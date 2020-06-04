@@ -6,9 +6,7 @@
   >
     <div class="root">
       <Menu></Menu>
-      <!--      <div class="header">-->
-
-      <!--      </div>-->
+      <!--<div class="header"></div>-->
       <div class="editor-container">
         <div class="sidebar">
           <EditorItemPanel></EditorItemPanel>
@@ -67,6 +65,7 @@ export default {
       idProject: to.params.id,
       idProcess: to.params.process
     });
+    this.update();
     next();
   },
   computed: {
@@ -74,28 +73,26 @@ export default {
       return firebase.auth().currentUser;
     },
     nodesCount() {
-      return this.data.nodes.length;
+      return this.process.nodes.length;
     },
     edgesCount() {
-      return this.data.edges.length;
+      return this.process.edges.length;
     },
     processes() {
       return this.$store.state.processes;
+    },
+    process(){
+      return this.$store.state.process;
+    },
+    project(){
+      return this.$store.state.project;
     }
   },
   data() {
     return {
-      project: {},
-      data: {
-        nodes: [],
-        edges: []
-      }
     };
   },
   methods: {
-    rrr() {
-      console.log(this.pr);
-    },
     _downloadImage(data, filename = "flowchart.png") {
       const a = document.createElement("a");
       a.href = data;
@@ -112,7 +109,7 @@ export default {
       return this.$refs.vgEditor.propsAPI.getSelected()[0].getModel();
     },
     update() {
-      this.$refs.vgEditor.propsAPI.read(this.data);
+      this.$refs.vgEditor.propsAPI.read(this.process);
     },
     updateLastEdit() {
       db.collection("projects")
@@ -132,7 +129,7 @@ export default {
       if (command.name === "add") {
         if (command.type === "node") {
           db.collection("projects")
-            .doc(this.$route.params.id)
+            .doc(this.$route.params.id).collection('processes').doc(this.$route.params.process)
             .collection("nodes")
             .doc(command.addId)
             .set(command.addModel);
@@ -155,7 +152,7 @@ export default {
             command.back();
           } else {
             db.collection("projects")
-              .doc(this.$route.params.id)
+              .doc(this.$route.params.id).collection('processes').doc(this.$route.params.process)
               .collection("edges")
               .doc(command.addId)
               .set(command.addModel);
@@ -163,7 +160,7 @@ export default {
         }
       } else if (command.name === "delete") {
         db.collection("projects")
-          .doc(this.$route.params.id)
+          .doc(this.$route.params.id).collection('processes').doc(this.$route.params.process)
           .collection("nodes")
           .doc(command.itemIds[0])
           .delete()
@@ -173,13 +170,13 @@ export default {
           .catch(function(error) {
             console.error("Error removing document: ", error);
           });
-        this.data.edges.map(e => {
+        this.process.edges.map(e => {
           if (
             e.source === command.itemIds[0] ||
             e.target === command.itemIds[0]
           ) {
             db.collection("projects")
-              .doc(this.$route.params.id)
+              .doc(this.$route.params.id).collection('processes').doc(this.$route.params.process)
               .collection("edges")
               .doc(e.id)
               .delete()
@@ -192,7 +189,7 @@ export default {
           }
         });
         db.collection("projects")
-          .doc(this.$route.params.id)
+          .doc(this.$route.params.id).collection('processes').doc(this.$route.params.process)
           .collection("edges")
           .doc(command.itemIds[0])
           .delete()
@@ -203,9 +200,9 @@ export default {
             console.error("Error removing document: ", error);
           });
       } else {
-        this.data.nodes.map(e => {
+        this.process.nodes.map(e => {
           db.collection("projects")
-            .doc(this.$route.params.id)
+            .doc(this.$route.params.id).collection('processes').doc(this.$route.params.process)
             .collection("nodes")
             .doc(e.id)
             .set(e);
@@ -221,9 +218,9 @@ export default {
           });
           command.back();
         } else {
-          this.data.edges.map(e => {
+          this.process.edges.map(e => {
             db.collection("projects")
-              .doc(this.$route.params.id)
+              .doc(this.$route.params.id).collection('processes').doc(this.$route.params.process)
               .collection("edges")
               .doc(e.id)
               .set(e);
@@ -235,21 +232,21 @@ export default {
     }
   },
   mounted() {
-    this.$bind(
-      "data.nodes",
-      db
-        .collection("projects")
-        .doc(this.$route.params.id)
-        .collection("nodes")
-    );
-    this.$bind(
-      "data.edges",
-      db
-        .collection("projects")
-        .doc(this.$route.params.id)
-        .collection("edges")
-    );
-    this.$bind("project", db.collection("projects").doc(this.$route.params.id));
+    // this.$bind(
+    //   "data.nodes",
+    //   db
+    //     .collection("projects")
+    //     .doc(this.$route.params.id)
+    //     .collection("nodes")
+    // );
+    // this.$bind(
+    //   "data.edges",
+    //   db
+    //     .collection("projects")
+    //     .doc(this.$route.params.id)
+    //     .collection("edges")
+    // );
+    // this.$bind("project", db.collection("projects").doc(this.$route.params.id));
 
     // Чтобы из корня был доступ к редактору
     this.$root.propsAPI = this.$refs.vgEditor.propsAPI;
