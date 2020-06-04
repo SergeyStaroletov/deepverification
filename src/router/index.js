@@ -29,9 +29,9 @@ const router = new Router({
       name: "project",
       component: Project,
       beforeEnter: (to, from, next) => {
-        Store.dispatch("bindProject", { idProject: to.params.id });
-        Store.dispatch("bindProcesses", { idProject: to.params.id });
-        next();
+        // Store.dispatch("bindProject", { idProject: to.params.id });
+        // Store.dispatch("bindProcesses", { idProject: to.params.id });
+        next({ path: `/project/${to.params.id}/main` });
       }
     },
     {

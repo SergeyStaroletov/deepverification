@@ -1,5 +1,5 @@
 <template>
-  <el-tabs type="card" @tab-click="handleClick">
+  <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
     <el-tab-pane
       v-for="process in processes"
       :label="process.id"
@@ -14,22 +14,19 @@ import firebase, { db } from "../../firebase";
 import "firebase/firestore";
 export default {
   name: "EditorTabs",
-  components: {},
-  data() {
-    return {
-      activeName: "first"
-    };
-  },
   computed: {
     processes() {
       return this.$store.state.processes;
+    },
+    activeName() {
+      return this.$route.params.process;
     }
   },
   methods: {
     handleClick(tab) {
-      // this.$route.params.id
-      this.$router.push({ path: `/project/${this.$route.params.id}/${tab.name}` });
-      console.log(tab);
+      this.$router.push({
+        path: `/project/${this.$route.params.id}/${tab.name}`
+      });
     }
   },
   mounted() {
