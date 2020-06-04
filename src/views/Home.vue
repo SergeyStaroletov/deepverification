@@ -22,7 +22,9 @@
         </el-table-column>
         <el-table-column prop="lastEdit" label="Последнее редактирование">
           <template slot-scope="scope">
-            <timeago :datetime="new Date(projects[scope.$index].lastEdit)"></timeago>
+            <timeago
+              :datetime="new Date(projects[scope.$index].lastEdit)"
+            ></timeago>
           </template>
         </el-table-column>
         <el-table-column label="Действия" width="120">

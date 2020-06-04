@@ -1,11 +1,8 @@
 <template>
   <div>
-    <el-menu
-      class="el-menu-demo"
-      mode="horizontal"
-      router
-    >
+    <el-menu class="el-menu-demo" mode="horizontal" router>
       <el-menu-item index="/">deepverification</el-menu-item>
+      <el-menu-item v-if="displayAddProcces">{{ project.name }}</el-menu-item>
       <el-submenu style="float: right;">
         <template slot="title">
           <el-avatar :size="32" :src="user.photoURL"></el-avatar>
@@ -60,6 +57,9 @@ export default {
         return true;
       }
       return false;
+    },
+    project() {
+      return this.$store.state.project;
     }
   },
   methods: {
@@ -105,4 +105,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style>
+.el-menu-item:first-child {
+  font-weight: bold;
+}
+</style>

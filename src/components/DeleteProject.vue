@@ -40,6 +40,7 @@ export default {
         .catch(function(error) {
           console.error("Error removing document: ", error);
         });
+      this.dialogVisible = false;
     }
   }
 };
