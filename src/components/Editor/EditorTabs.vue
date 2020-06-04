@@ -15,12 +15,17 @@ import "firebase/firestore";
 export default {
   name: "EditorTabs",
   computed: {
-    processes() {
-      return this.$store.state.processes;
-    },
+    // processes() {
+    //   return this.$store.state.processes;
+    // },
     activeName() {
       return this.$route.params.process;
     }
+  },
+  data() {
+    return {
+      processes: []
+    };
   },
   methods: {
     handleClick(tab) {
@@ -30,12 +35,20 @@ export default {
     }
   },
   mounted() {
+    // this.$bind(
+    //   "process",
+    //   db
+    //     .collection("projects")
+    //     .doc(this.$route.params.id)
+    //     .collection("process")
+    // );
     this.$bind(
-      "process",
+      "processes",
       db
         .collection("projects")
         .doc(this.$route.params.id)
-        .collection("process")
+        .collection("processes")
+        .orderBy("created")
     );
   }
 };
