@@ -6,18 +6,21 @@
       :key="process.id"
       :name="process.id"
     />
+    <el-tab-pane name="plus">
+      <span slot="label"><i class="el-icon-plus"></i></span>
+    </el-tab-pane>
+    <AddProcess ref="addProcess" :tab="true"></AddProcess>
   </el-tabs>
 </template>
 
 <script>
 import firebase, { db } from "../../firebase";
 import "firebase/firestore";
+import AddProcess from "../AddProcess";
 export default {
   name: "EditorTabs",
+  components: { AddProcess },
   computed: {
-    // processes() {
-    //   return this.$store.state.processes;
-    // },
     activeName() {
       return this.$route.params.process;
     }
@@ -29,19 +32,16 @@ export default {
   },
   methods: {
     handleClick(tab) {
-      this.$router.push({
-        path: `/project/${this.$route.params.id}/${tab.name}`
-      });
+      if (tab.name === "plus") {
+        this.$refs.addProcess.dialogFormVisible = true;
+      } else {
+        this.$router.push({
+          path: `/project/${this.$route.params.id}/${tab.name}`
+        });
+      }
     }
   },
   mounted() {
-    // this.$bind(
-    //   "process",
-    //   db
-    //     .collection("projects")
-    //     .doc(this.$route.params.id)
-    //     .collection("process")
-    // );
     this.$bind(
       "processes",
       db

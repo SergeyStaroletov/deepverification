@@ -1,6 +1,9 @@
 <template>
   <fragment>
-    <el-menu-item style="float: right;" @click="dialogFormVisible = true"
+    <el-menu-item
+      v-if="!tab"
+      style="float: right;"
+      @click="dialogFormVisible = true"
       >Новый процесс</el-menu-item
     >
     <el-dialog title="Новый процесс" :visible.sync="dialogFormVisible">
@@ -28,10 +31,10 @@ export default {
     var validateUniqueProcessname = (rule, value, callback) => {
       console.log(this.processes);
 
-      let a = this.processes.some(e => e.id === value);
+      let a = this.processes.some(e => e.name === value);
       console.log(a);
       if (a) {
-        callback(new Error("Пожалуйста, введите новое имя процесса"));
+        callback(new Error("Такой процесс уже существует"));
       } else {
         callback();
       }
@@ -63,6 +66,7 @@ export default {
       }
     };
   },
+  props: ["tab"],
   computed: {
     processes() {
       return this.$store.state.processes;
@@ -79,9 +83,14 @@ export default {
               type: "cyber",
               name: this.form.name,
               created: Date.now()
+            })
+            .then(e => {
+              this.form.name = "";
+              this.dialogFormVisible = false;
+              this.$router.push({
+                path: `/project/${this.$route.params.id}/${e.id}`
+              });
             });
-          this.form.name = "";
-          this.dialogFormVisible = false;
         } else {
           console.log("error submit!!");
           return false;

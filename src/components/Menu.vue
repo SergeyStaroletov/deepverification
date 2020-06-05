@@ -11,7 +11,7 @@
         <el-menu-item @click="logout">Выйти</el-menu-item>
       </el-submenu>
       <AddProject v-if="$route.name === 'home'"></AddProject>
-      <AddProcess v-if="displayAddProcess"></AddProcess>
+      <!--      <AddProcess v-if="displayAddProcess"></AddProcess>-->
       <ShareProject
         v-if="displayAddProcess"
         :project="project"
