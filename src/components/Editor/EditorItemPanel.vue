@@ -25,6 +25,11 @@
       :config="customNodes.flowLabel"
       extend="flow-rect"
     />
+    <register-node
+      name="flow-run"
+      :config="customNodes.flowRun"
+      extend="flow-capsule"
+    />
     <item
       class="item"
       type="node"
@@ -77,6 +82,18 @@
         label: 'Label'
       }"
       src="/img/label.svg"
+    />
+    <item
+      class="item"
+      type="node"
+      size="144*72"
+      shape="flow-run"
+      :model="{
+        color: '#a15be8',
+        label: 'Run',
+        process: ''
+      }"
+      src="/img/run.svg"
     />
   </item-panel>
 </template>
@@ -164,6 +181,9 @@ export default {
               }
             });
           }
+        },
+        flowRun: {
+          name: "flowRun"
         }
       }
     };

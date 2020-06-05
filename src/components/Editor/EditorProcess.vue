@@ -21,8 +21,10 @@ export default {
   methods: {
     clickToNode(e) {
       console.log(e);
-      if (e.domEvent.ctrlKey) {
-        this.$router.push({ path: `/project/${this.$route.params.id}` });
+      if (e.domEvent.ctrlKey && e.item.model.shape === "flow-run") {
+        this.$router.push({
+          path: `/project/${this.$route.params.id}/${e.item.model.process}`
+        });
       }
     }
   }

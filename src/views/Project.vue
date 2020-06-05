@@ -266,6 +266,7 @@ export default {
 
     // Чтобы из корня был доступ к редактору
     this.$root.propsAPI = this.$refs.vgEditor.propsAPI;
+    console.log(11111, this.$root.propsAPI.save())
   },
   updated() {
     this.update();
