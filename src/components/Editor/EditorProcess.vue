@@ -9,6 +9,7 @@
         lineWidth: 0.5
       }
     }"
+    :onNodeClick="clickToNode"
   ></flow>
 </template>
 
@@ -16,7 +17,15 @@
 import { Flow } from "vg-editor";
 export default {
   name: "EditorProcess",
-  components: { Flow }
+  components: { Flow },
+  methods: {
+    clickToNode(e) {
+      console.log(e);
+      if (e.domEvent.ctrlKey) {
+        this.$router.push({ path: `/project/${this.$route.params.id}` });
+      }
+    }
+  }
 };
 </script>
 
