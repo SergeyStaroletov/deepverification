@@ -30,6 +30,16 @@
       :config="customNodes.flowRun"
       extend="flow-capsule"
     />
+    <register-node
+      name="flow-send"
+      :config="customNodes.flowSend"
+      extend="flow-rect"
+    />
+    <register-node
+      name="flow-get"
+      :config="customNodes.flowGet"
+      extend="flow-rect"
+    />
     <item
       class="item"
       type="node"
@@ -94,6 +104,28 @@
         process: ''
       }"
       src="/img/run.svg"
+    />
+    <item
+      class="item"
+      type="node"
+      size="144*72"
+      shape="flow-send"
+      :model="{
+        label: 'Send',
+        chanel: ''
+      }"
+      src="/img/send.svg"
+    />
+    <item
+      class="item"
+      type="node"
+      size="144*72"
+      shape="flow-get"
+      :model="{
+        label: 'Get',
+        chanel: ''
+      }"
+      src="/img/get.svg"
     />
   </item-panel>
 </template>
@@ -184,6 +216,12 @@ export default {
         },
         flowRun: {
           name: "flowRun"
+        },
+        flowSend: {
+          name: "flowSend"
+        },
+        flowGet: {
+          name: "flowGet"
         }
       }
     };
