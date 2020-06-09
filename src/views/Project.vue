@@ -14,9 +14,7 @@
         <div class="editor">
           <EditorTabs></EditorTabs>
           <EditorProcess v-show="process.root.type != 'ltl'"></EditorProcess>
-          <p v-if="process.root.type === 'ltl'">
-            задание требований
-          </p>
+          <EditorLTLTab v-if="process.root.type === 'ltl'"> </EditorLTLTab>
         </div>
         <div class="left-bar">
           <EditorDetailPanel></EditorDetailPanel>
@@ -38,10 +36,12 @@ import EditorProcess from "../components/Editor/EditorProcess";
 import EditorTabs from "../components/Editor/EditorTabs";
 import AddProcess from "../components/AddProcess";
 import Menu from "../components/Menu";
+import EditorLTLTab from "../components/Editor/EditorLTLTab";
 
 export default {
   name: "Project",
   components: {
+    EditorLTLTab,
     AddProcess,
     EditorTabs,
     EditorProcess,
@@ -67,6 +67,12 @@ export default {
     this.$store.dispatch("bindEdges", {
       idProject: to.params.id,
       idProcess: to.params.process
+    });
+    this.$store.dispatch("bindVariables", {
+      idProject: to.params.id
+    });
+    this.$store.dispatch("bindRequirements", {
+      idProject: to.params.id
     });
     this.update();
     next();
@@ -266,7 +272,7 @@ export default {
 
     // Чтобы из корня был доступ к редактору
     this.$root.propsAPI = this.$refs.vgEditor.propsAPI;
-    console.log(11111, this.$root.propsAPI.save())
+    console.log(11111, this.$root.propsAPI.save());
   },
   updated() {
     this.update();

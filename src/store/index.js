@@ -17,7 +17,9 @@ export default new Vuex.Store({
       nodes: {},
       edges: {},
       root: {}
-    }
+    },
+    variables: {},
+    requirements: {}
   },
   mutations: vuexfireMutations,
   actions: {
@@ -87,6 +89,28 @@ export default new Vuex.Store({
           .collection("processes")
           .doc(payload.idProcess)
           .collection("edges")
+      );
+    }),
+    bindVariables: firestoreAction(({ bindFirestoreRef }, payload) => {
+      return bindFirestoreRef(
+        "variables",
+        db
+          .collection("projects")
+          .doc(payload.idProject)
+          .collection("processes")
+          .doc("Требования")
+          .collection("variables")
+      );
+    }),
+    bindRequirements: firestoreAction(({ bindFirestoreRef }, payload) => {
+      return bindFirestoreRef(
+        "requirements",
+        db
+          .collection("projects")
+          .doc(payload.idProject)
+          .collection("processes")
+          .doc("Требования")
+          .collection("requirements")
       );
     })
   },

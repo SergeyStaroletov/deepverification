@@ -89,6 +89,12 @@ const router = new Router({
           idProject: to.params.id,
           idProcess: to.params.process
         });
+        Store.dispatch("bindVariables", {
+          idProject: to.params.id
+        });
+        Store.dispatch("bindRequirements", {
+          idProject: to.params.id
+        });
         next();
       }
     }
