@@ -17,6 +17,7 @@
         :project="project"
         menu="true"
       ></ShareProject>
+      <GenerateCode v-if="displayAddProcess"> </GenerateCode>
     </el-menu>
   </div>
 </template>
@@ -26,10 +27,11 @@ import firebase, { db } from "../firebase";
 import AddProject from "./AddProject";
 import AddProcess from "./AddProcess";
 import ShareProject from "./ShareProject";
+import GenerateCode from "./GenerateCode";
 
 export default {
   name: "Menu",
-  components: { ShareProject, AddProcess, AddProject },
+  components: { GenerateCode, ShareProject, AddProcess, AddProject },
   computed: {
     user() {
       return firebase.auth().currentUser;
