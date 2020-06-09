@@ -37,10 +37,14 @@ import EditorTabs from "../components/Editor/EditorTabs";
 import AddProcess from "../components/AddProcess";
 import Menu from "../components/Menu";
 import EditorLTLTab from "../components/Editor/EditorLTLTab";
+import TableVariables from "../components/Editor/Detail/TableVariables";
+import TableRequirements from "../components/Editor/Detail/TableRequirements";
 
 export default {
   name: "Project",
   components: {
+    TableRequirements,
+    TableVariables,
     EditorLTLTab,
     AddProcess,
     EditorTabs,

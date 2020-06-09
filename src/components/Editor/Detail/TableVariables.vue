@@ -13,7 +13,7 @@
       </el-table-column>
       <el-table-column label="Initial Value" prop="initial"> </el-table-column>
       <el-table-column label="Scope" prop="scope"> </el-table-column>
-      <el-table-column align="right">
+      <el-table-column width="300" align="right">
         <template slot-scope="scope">
           <!--                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"-->
           <!--                      >Edit</el-button-->
@@ -33,7 +33,7 @@ import AddEditVariables from "./AddEditVariables";
 import firebase, { db } from "../../../firebase";
 
 export default {
-  name: "EditorVariables",
+  name: "TableVariables",
   components: { AddEditVariables },
   data() {
     return {
@@ -59,4 +59,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+h3 {
+  margin-left: 5px;
+}
+</style>

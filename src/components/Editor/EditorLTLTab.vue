@@ -1,17 +1,16 @@
 <template>
   <div>
-    <EditorVariables></EditorVariables>
-    <LTLREquirements></LTLREquirements>
+    <TableVariables></TableVariables>
+    <TableRequirements></TableRequirements>
   </div>
 </template>
 
 <script>
-import EditorVariables from "./Detail/EditorVariables";
-import LTLREquirements from "./Detail/LTLREquirements";
-
+import TableVariables from "./Detail/TableVariables";
+import TableRequirements from "./Detail/TableRequirements";
 export default {
   name: "EditorLTLTab",
-  components: {LTLREquirements, EditorVariables },
+  components: { TableRequirements, TableVariables },
   computed: {
     variables() {
       return this.$store.state.variables;

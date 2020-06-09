@@ -3,19 +3,17 @@
     <el-button size="mini" @click="dialogFormVisible = true"
       ><slot></slot
     ></el-button>
-    <el-dialog title="Новая переменная" :visible.sync="dialogFormVisible">
+    <el-dialog align="left" title="Новое требование" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form">
-        <el-form-item prop="name" label="Название">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
+        <el-form-item prop="requirement" label="Требование">
+          <el-input v-model="form.requirement" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item prop="description" label="Описание">
           <el-input v-model="form.description" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item prop="type" label="Класс">
-          <el-select v-model="form.type" placeholder="выберите класс">
-            <el-option label="int" value="int"></el-option>
-            <el-option label="bool" value="bool"></el-option>
-            <el-option label="chanel" value="chanel"></el-option>
+        <el-form-item prop="class" label="Класс">
+          <el-select v-model="form.class" placeholder="выберите класс">
+            <el-option label="global" value="global"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -39,16 +37,23 @@ export default {
       dialogFormVisible: false,
       form: {},
       rules: {
-        name: [
+        requirement: [
           {
             required: true,
-            message: "Пожалуйста, введите название переменной",
+            message: "Пожалуйста, введите предикат",
             trigger: "blur"
           },
           {
             min: 1,
-            max: 25,
-            message: "Длинна названия должна быть от 1 до 25 символов",
+            max: 250,
+            message: "Длинна названия должна быть от 1 до 250 символов",
+            trigger: "blur"
+          }
+        ],
+        class: [
+          {
+            required: true,
+            message: "Пожалуйста, выберите класс для требования",
             trigger: "blur"
           }
         ]

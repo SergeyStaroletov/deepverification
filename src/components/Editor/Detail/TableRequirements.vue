@@ -6,12 +6,14 @@
       <el-table-column label="Description" prop="description">
       </el-table-column>
       <el-table-column label="Class" prop="class"> </el-table-column>
-      <el-table-column align="right">
+      <el-table-column width="300" align="right">
         <template slot-scope="scope">
           <!--                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"-->
           <!--                      >Edit</el-button-->
           <!--                    >-->
-          <AddEditRequirements :variable="scope.row">Изменить</AddEditRequirements>
+          <AddEditRequirements :variable="scope.row"
+            >Изменить</AddEditRequirements
+          >
           <el-button size="mini" type="danger" @click="handleDelete(scope.row)"
             >Удалить</el-button
           >
@@ -26,8 +28,8 @@ import firebase, { db } from "../../../firebase";
 import AddEditRequirements from "./AddEditRequirements";
 
 export default {
-  name: "LTLREquirements",
-  components: {AddEditRequirements },
+  name: "TableRequirements",
+  components: { AddEditRequirements },
   data() {
     return {
       search: ""
@@ -52,4 +54,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+h3 {
+  margin-left: 5px;
+}
+</style>

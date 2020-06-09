@@ -1,7 +1,9 @@
 <template>
   <fragment>
-    <el-button size="mini" @click="dialogFormVisible = true"><slot></slot></el-button>
-    <el-dialog title="Новая переменная" :visible.sync="dialogFormVisible">
+    <el-button size="mini" @click="dialogFormVisible = true"
+      ><slot></slot
+    ></el-button>
+    <el-dialog align="left" title="Новая переменная" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form">
         <el-form-item prop="name" label="Название">
           <el-input v-model="form.name" autocomplete="off"></el-input>
@@ -53,6 +55,20 @@ export default {
             min: 1,
             max: 25,
             message: "Длинна названия должна быть от 1 до 25 символов",
+            trigger: "blur"
+          }
+        ],
+        type: [
+          {
+            required: true,
+            message: "Пожалуйста, выберите тип переменной",
+            trigger: "blur"
+          }
+        ],
+        initial: [
+          {
+            required: true,
+            message: "Пожалуйста, введите начальное значение",
             trigger: "blur"
           }
         ]
