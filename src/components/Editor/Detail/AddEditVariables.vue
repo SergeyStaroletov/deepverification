@@ -3,7 +3,11 @@
     <el-button size="mini" @click="dialogFormVisible = true"
       ><slot></slot
     ></el-button>
-    <el-dialog align="left" title="Новая переменная" :visible.sync="dialogFormVisible">
+    <el-dialog
+      align="left"
+      title="Новая переменная"
+      :visible.sync="dialogFormVisible"
+    >
       <el-form :model="form" :rules="rules" ref="form">
         <el-form-item prop="name" label="Название">
           <el-input v-model="form.name" autocomplete="off"></el-input>
@@ -12,11 +16,14 @@
           <el-select v-model="form.type" placeholder="выберите тип">
             <el-option label="int" value="int"></el-option>
             <el-option label="bool" value="bool"></el-option>
-            <el-option label="chanel" value="chanel"></el-option>
+            <el-option label="byte" value="byte"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item prop="isArray" label="Массив">
           <el-switch v-model="form.isArray"></el-switch>
+        </el-form-item>
+        <el-form-item v-if="isArray" prop="length" label="Длинна">
+          <el-input v-model="form.length" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item prop="description" label="Описание">
           <el-input v-model="form.description" autocomplete="off"></el-input>
@@ -65,13 +72,7 @@ export default {
             trigger: "blur"
           }
         ],
-        initial: [
-          {
-            required: true,
-            message: "Пожалуйста, введите начальное значение",
-            trigger: "blur"
-          }
-        ]
+        initial: []
       }
     };
   },

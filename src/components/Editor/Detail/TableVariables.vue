@@ -12,12 +12,8 @@
       <el-table-column label="Description" prop="description">
       </el-table-column>
       <el-table-column label="Initial Value" prop="initial"> </el-table-column>
-      <el-table-column label="Scope" prop="scope"> </el-table-column>
       <el-table-column width="300" align="right">
         <template slot-scope="scope">
-          <!--                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"-->
-          <!--                      >Edit</el-button-->
-          <!--                    >-->
           <AddEditVariables :variable="scope.row">Изменить</AddEditVariables>
           <el-button size="mini" type="danger" @click="handleDelete(scope.row)"
             >Удалить</el-button

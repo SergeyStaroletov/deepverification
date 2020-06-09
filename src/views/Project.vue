@@ -78,6 +78,9 @@ export default {
     this.$store.dispatch("bindRequirements", {
       idProject: to.params.id
     });
+    this.$store.dispatch("bindChanels", {
+      idProject: to.params.id
+    });
     this.update();
     next();
   },

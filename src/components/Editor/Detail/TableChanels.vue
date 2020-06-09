@@ -1,18 +1,15 @@
 <template>
   <div>
-    <h3>LTL требования <AddEditRequirements>Добавить</AddEditRequirements></h3>
-    <el-table :data="requirements" style="width: 100%">
-      <el-table-column label="Предикат" prop="requirement"> </el-table-column>
+    <h3>Каналы <AddEditChanels>Добавить</AddEditChanels></h3>
+    <el-table :data="chanels" style="width: 100%">
+      <el-table-column label="Name" prop="name"> </el-table-column>
+      <el-table-column label="Type" prop="type"> </el-table-column>
+      <el-table-column label="Length" prop="lenght"> </el-table-column>
       <el-table-column label="Description" prop="description">
       </el-table-column>
       <el-table-column width="300" align="right">
         <template slot-scope="scope">
-          <!--                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"-->
-          <!--                      >Edit</el-button-->
-          <!--                    >-->
-          <AddEditRequirements :variable="scope.row"
-            >Изменить</AddEditRequirements
-          >
+          <AddEditChanels :variable="scope.row">Изменить</AddEditChanels>
           <el-button size="mini" type="danger" @click="handleDelete(scope.row)"
             >Удалить</el-button
           >
@@ -23,20 +20,20 @@
 </template>
 
 <script>
+import AddEditChanels from "./AddEditChanels";
 import firebase, { db } from "../../../firebase";
-import AddEditRequirements from "./AddEditRequirements";
 
 export default {
-  name: "TableRequirements",
-  components: { AddEditRequirements },
+  name: "TableChanels",
+  components: { AddEditChanels },
   data() {
     return {
       search: ""
     };
   },
   computed: {
-    requirements() {
-      return this.$store.state.requirements;
+    chanels() {
+      return this.$store.state.chanels;
     }
   },
   methods: {
@@ -45,7 +42,7 @@ export default {
         .doc(this.$route.params.id)
         .collection("processes")
         .doc("Требования")
-        .collection("requirements")
+        .collection("chanels")
         .doc(row.id)
         .delete();
     }

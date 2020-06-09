@@ -95,6 +95,9 @@ const router = new Router({
         Store.dispatch("bindRequirements", {
           idProject: to.params.id
         });
+        Store.dispatch("bindChanels", {
+          idProject: to.params.id
+        });
         next();
       }
     }

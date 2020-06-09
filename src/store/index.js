@@ -19,7 +19,8 @@ export default new Vuex.Store({
       root: {}
     },
     variables: {},
-    requirements: {}
+    requirements: {},
+    chanels: {}
   },
   mutations: vuexfireMutations,
   actions: {
@@ -111,6 +112,17 @@ export default new Vuex.Store({
           .collection("processes")
           .doc("Требования")
           .collection("requirements")
+      );
+    }),
+    bindChanels: firestoreAction(({ bindFirestoreRef }, payload) => {
+      return bindFirestoreRef(
+        "chanels",
+        db
+          .collection("projects")
+          .doc(payload.idProject)
+          .collection("processes")
+          .doc("Требования")
+          .collection("chanels")
       );
     })
   },
