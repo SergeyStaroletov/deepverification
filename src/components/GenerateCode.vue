@@ -24,7 +24,9 @@ export default {
   data() {
     return {
       code: "",
-      dialogVisible: false
+      dialogVisible: false,
+      edges: {},
+      nodes: {}
     };
   },
   computed: {
@@ -39,12 +41,16 @@ export default {
     },
     project() {
       return this.$store.state.project;
+    },
+    processes() {
+      return this.$store.state.processes;
     }
   },
   methods: {
-    runGenerate() {
+    async runGenerate() {
       this.code = `// ${this.project.name}\n\n`;
       this.code = this.code + this.generateRequirementsBlock();
+      this.code = this.code + (await this.generateProcessBlock());
       this.dialogVisible = true;
     },
     generateRequirementsBlock() {
@@ -74,6 +80,94 @@ export default {
         code = code + line;
       });
       return code;
+    },
+    async generateProcessBlock() {
+      let code = "\n";
+
+      for (let i = 0; i < this.processes.length; i++) {
+        let p = this.processes[i];
+        if (p.type === "cyber") {
+          // code = code + 'active proctype ' + p.name + '(){';
+          // code = code + await this.generateProcess(p.id) + '\n}\n\n';
+          code =
+            code +
+            `active proctype ${p.name}(){\n${await this.generateProcess(
+              p.id
+            )}}\n\n`;
+        }
+      }
+
+      // await this.processes.map(async p => {
+      //   console.log(p);
+      //
+      //   if (p.type === "cyber") {
+      //     // code = code + 'active proctype ' + p.name + '(){';
+      //     // code = code + await this.generateProcess(p.id) + '\n}\n\n';
+      //     code =
+      //       code +
+      //       `active proctype ${p.name}(){\n${await this.generateProcess(
+      //         p.id
+      //       )}}\n\n`;
+      //   }
+      // });
+      return code;
+    },
+    async generateProcess(id) {
+      let code = "init{\nmain()\n}\n";
+
+      await this.$bind(
+        "nodes",
+        db
+          .collection("projects")
+          .doc(this.$route.params.id)
+          .collection("processes")
+          .doc(id)
+          .collection("nodes")
+      );
+
+      await this.$bind(
+        "edges",
+        db
+          .collection("projects")
+          .doc(this.$route.params.id)
+          .collection("processes")
+          .doc(id)
+          .collection("edges")
+      );
+
+      let start = this.nodes.find(e => e.shape === "flow-start");
+
+      console.log(111, start);
+
+      let nextNodes = this.getNextNodes(start);
+
+
+      code = code + this.printStep(start);
+
+      return code;
+    },
+    printStep(node) {
+      // console.log(this.nodes[id])
+      return node.label + "\n";
+    },
+    printIf(node, edges) {
+      return 1;
+    },
+    printSend(node) {
+      return "send\n";
+    },
+    printGet(node) {
+      return "get\n";
+    },
+    printRun(node) {
+      return "run" + node.label + "()\n";
+    },
+    getNextNodes(node) {
+      let targets = this.edges.filter(e => e.source === node.id);
+      for (let i = 0; i < targets.length; i++) {
+        targets[i] = this.nodes[i];
+      }
+      return targets;
     }
   }
 };

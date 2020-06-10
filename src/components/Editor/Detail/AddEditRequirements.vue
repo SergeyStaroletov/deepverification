@@ -5,6 +5,9 @@
     ></el-button>
     <el-dialog align="left" title="Новое требование" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="form">
+        <el-form-item prop="name" label="Название">
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
         <el-form-item prop="requirement" label="Требование">
           <el-input v-model="form.requirement" autocomplete="off"></el-input>
         </el-form-item>

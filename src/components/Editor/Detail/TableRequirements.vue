@@ -2,6 +2,7 @@
   <div>
     <h3>LTL требования <AddEditRequirements>Добавить</AddEditRequirements></h3>
     <el-table :data="requirements" style="width: 100%">
+      <el-table-column label="Название" prop="name"> </el-table-column>
       <el-table-column label="Предикат" prop="requirement"> </el-table-column>
       <el-table-column label="Description" prop="description">
       </el-table-column>
