@@ -29,7 +29,7 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="cancelCreate('form')">Отмена</el-button>
         <el-button type="primary" @click="createProcess('form')"
-          >Добавить требование</el-button
+          >Добавить канал</el-button
         >
       </span>
     </el-dialog>
@@ -46,23 +46,16 @@ export default {
       dialogFormVisible: false,
       form: {},
       rules: {
-        requirement: [
+        name: [
           {
             required: true,
-            message: "Пожалуйста, введите предикат",
+            message: "Пожалуйста, введите название",
             trigger: "blur"
           },
           {
             min: 1,
             max: 250,
             message: "Длинна названия должна быть от 1 до 250 символов",
-            trigger: "blur"
-          }
-        ],
-        class: [
-          {
-            required: true,
-            message: "Пожалуйста, выберите класс для требования",
             trigger: "blur"
           }
         ]

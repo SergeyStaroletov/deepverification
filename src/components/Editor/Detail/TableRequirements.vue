@@ -7,9 +7,6 @@
       </el-table-column>
       <el-table-column width="300" align="right">
         <template slot-scope="scope">
-          <!--                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"-->
-          <!--                      >Edit</el-button-->
-          <!--                    >-->
           <AddEditRequirements :variable="scope.row"
             >Изменить</AddEditRequirements
           >

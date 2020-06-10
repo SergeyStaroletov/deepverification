@@ -34,6 +34,9 @@ export default {
     requirements() {
       return this.$store.state.requirements;
     },
+    chanels() {
+      return this.$store.state.chanels;
+    },
     project() {
       return this.$store.state.project;
     }
@@ -47,16 +50,25 @@ export default {
     generateRequirementsBlock() {
       let code = "// Глобальные переменные\n";
       this.variables.map(v => {
-        let line = `${v.type} ${v.name} = ${v.initial}; ${
-          v.description ? "// " + v.description : ""
+        let line = `${v.type} ${v.name}${v.isArray ? `[${v.length}]` : ""}${
+          v.initial ? " = " + v.initial : ""
+        }; ${v.description ? "// " + v.description : ""}\n`;
+        code = code + line;
+      });
+
+      code = code + "\n// Каналы\n";
+
+      this.chanels.map(c => {
+        let line = `chan ${c.name}=[{${c.length}}] of {${c.type}} ${
+          c.description ? "// " + c.description : ""
         }\n`;
         code = code + line;
       });
 
-      code = code + "\n//Требования\n";
+      code = code + "\n// Требования\n";
 
       this.requirements.map(r => {
-        let line = `ltl ${r.id} {${r.requirement}} ${
+        let line = `ltl ${r.name} {${r.requirement}} ${
           r.description ? "// " + r.description : ""
         }\n`;
         code = code + line;

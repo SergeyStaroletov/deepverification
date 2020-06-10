@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="tables">
     <TableVariables></TableVariables>
     <TableChanels></TableChanels>
     <TableRequirements></TableRequirements>
@@ -12,7 +12,7 @@ import TableRequirements from "./Detail/TableRequirements";
 import TableChanels from "./Detail/TableChanels";
 export default {
   name: "EditorLTLTab",
-  components: {TableChanels, TableRequirements, TableVariables },
+  components: { TableChanels, TableRequirements, TableVariables },
   computed: {
     variables() {
       return this.$store.state.variables;
@@ -21,4 +21,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style>
+.tables {
+  overflow-y: scroll;
+  height: calc(100vh - 61px - 40px);
+}
+</style>

@@ -22,7 +22,7 @@
         <el-form-item prop="isArray" label="Массив">
           <el-switch v-model="form.isArray"></el-switch>
         </el-form-item>
-        <el-form-item v-if="isArray" prop="length" label="Длинна">
+        <el-form-item v-if="form.isArray" prop="length" label="Длинна">
           <el-input v-model="form.length" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item prop="description" label="Описание">

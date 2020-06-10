@@ -4,7 +4,7 @@
     <el-table :data="chanels" style="width: 100%">
       <el-table-column label="Name" prop="name"> </el-table-column>
       <el-table-column label="Type" prop="type"> </el-table-column>
-      <el-table-column label="Length" prop="lenght"> </el-table-column>
+      <el-table-column label="Length" prop="length"> </el-table-column>
       <el-table-column label="Description" prop="description">
       </el-table-column>
       <el-table-column width="300" align="right">
