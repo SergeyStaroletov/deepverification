@@ -50,6 +50,7 @@ export default {
     async runGenerate() {
       this.code = `// ${this.project.name}\n\n`;
       this.code = this.code + this.generateRequirementsBlock();
+      this.code = this.code + "init{\nmain()\n}\n";
       this.code = this.code + (await this.generateProcessBlock());
       this.dialogVisible = true;
     },
@@ -113,7 +114,8 @@ export default {
       return code;
     },
     async generateProcess(id) {
-      let code = "init{\nmain()\n}\n";
+      let code = "";
+      let fi = false;
 
       await this.$bind(
         "nodes",
@@ -135,39 +137,115 @@ export default {
           .collection("edges")
       );
 
+      let visited = {};
+      let vue = this;
+
+      // function dfsIf(id){
+      //
+      // }
+
+      function dfs(id) {
+        function getNextNodes(id) {
+          let targets = vue.edges.filter(e => e.source === id);
+          let result = [];
+          targets.map(e => {
+            result.push(e.target);
+          });
+          console.log(result);
+          return result;
+        }
+
+        visited[id] = true;
+        let nextNodes = getNextNodes(id);
+        for (let i = 0; i < nextNodes.length; i++) {
+          if (visited[vue.nodes[nextNodes[i]]] != true) {
+            console.log(vue.nodes.find(e => e.id === nextNodes[i]));
+            let curNode = vue.nodes.find(e => e.id === nextNodes[i]);
+            let line = "";
+            if (curNode.shape === "flow-step") {
+              line = vue.printStep(curNode);
+            } else if (curNode.shape === "flow-run") {
+              line = vue.printRun(curNode);
+            } else if (curNode.shape === "flow-send") {
+              line = vue.printSend(curNode);
+            } else if (curNode.shape === "flow-get") {
+              line = vue.printGet(curNode);
+            } else if (curNode.shape === "flow-end") {
+              if (fi) {
+                line = "fi\n";
+              }
+              fi = true;
+            } else if (curNode.shape === "flow-if") {
+              // line = "if\n";
+              // let ifSource = vue.edges.filter(e => e.source === curNode.id);
+              // ifSource.map(e => {
+              //   line = line + "::(" + e.label + ") -> ";
+              //   let n2 = "";
+              //   let tmpN = vue.nodes.find(e2 => {
+              //     n2 = e2.id;
+              //     return e2.id === e.target;
+              //   });
+              //   line = line + tmpN.label + "; ";
+              //   visited[tmpN.id] = true;
+              //
+              //   let n3 = vue.edges.find(e => e.source === n2);
+              //
+              //   tmpN = vue.nodes.find(e2 => {
+              //     // n2 = e2.id;
+              //     return e2.id === n3.target;
+              //   });
+              //   line = line + tmpN.label + ";\n";
+              //   visited[tmpN.id] = true;
+              // });
+              // line = line + "fi\n";
+
+              line = "if\n";
+            } else if (curNode.shape === "flow-end") {
+              //
+            }
+            code = code + line;
+            dfs(nextNodes[i]);
+          } else {
+            //слияние
+          }
+        }
+      }
+
       let start = this.nodes.find(e => e.shape === "flow-start");
+      dfs(start.id);
 
-      console.log(111, start);
-
-      let nextNodes = this.getNextNodes(start);
-
-
-      code = code + this.printStep(start);
+      // code = code + this.printStep(start);
 
       return code;
     },
     printStep(node) {
-      // console.log(this.nodes[id])
-      return node.label + "\n";
+      let lastNode = this.nodes.find(
+        e1 => e1.id === this.edges.find(e => e.target === node.id).source
+      );
+      if (lastNode.shape === "flow-if") {
+        return (
+          "::" +
+          "(" +
+          this.edges.find(e => e.target === node.id).label +
+          ")->" +
+          node.label +
+          ";\n"
+        );
+      } else {
+        return node.label + ";\n";
+      }
     },
-    printIf(node, edges) {
-      return 1;
+    printIf(node) {
+      return "if\n::";
     },
     printSend(node) {
-      return "send\n";
+      return node.variable + "!" + node.chanel;
     },
     printGet(node) {
-      return "get\n";
+      return node.variable + "?" + node.chanel;
     },
     printRun(node) {
-      return "run" + node.label + "()\n";
-    },
-    getNextNodes(node) {
-      let targets = this.edges.filter(e => e.source === node.id);
-      for (let i = 0; i < targets.length; i++) {
-        targets[i] = this.nodes[i];
-      }
-      return targets;
+      return "run " + node.label.substr(4) + "()\n";
     }
   }
 };
