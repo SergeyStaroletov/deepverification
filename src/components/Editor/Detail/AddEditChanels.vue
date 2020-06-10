@@ -19,7 +19,7 @@
             <el-option label="byte" value="byte"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item prop="length" label="Длинна">
+        <el-form-item prop="length" label="Длина">
           <el-input v-model="form.length" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item prop="description" label="Описание">
