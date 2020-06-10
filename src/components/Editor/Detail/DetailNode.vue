@@ -44,7 +44,7 @@
     <div v-if="this.formModel.shape === 'flow-get'">
       Отправка сообщения
       <el-select
-        @change="changeChanel('Get')"
+        @change="changeChanel('Receive')"
         v-model="formModel.chanel"
         placeholder="Выбирете канал"
       >
@@ -59,7 +59,7 @@
       Переменная для сохранения
       <el-input
         v-model="formModel.variable"
-        @change="changeChanel('Get')"
+        @change="changeChanel('Receive')"
       ></el-input>
     </div>
   </fragment>
@@ -129,7 +129,12 @@ export default {
     },
     changeChanel(type) {
       let name = this.chanels.find(e => e.id === this.formModel.chanel).name;
-      let newLabel = type + " " + name + " - " + this.formModel.variable;
+      let newLabel =
+        type +
+        " " +
+        this.formModel.variable +
+        (type === "Send" ? " -> " : " <- ") +
+        name;
       db.collection("projects")
         .doc(this.$route.params.id)
         .collection("processes")

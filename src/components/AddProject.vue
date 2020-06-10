@@ -71,7 +71,7 @@ export default {
                 .collection("processes")
                 .doc("Требования")
                 .set({
-                  name: "Требования",
+                  name: "Требования и переменные",
                   type: "ltl",
                   created: now - 1
                 });

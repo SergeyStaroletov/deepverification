@@ -124,7 +124,7 @@
       size="144*72"
       shape="flow-get"
       :model="{
-        label: 'Get',
+        label: 'Receive',
         chanel: '',
         variable: '',
         chanelName: ''

@@ -66,7 +66,7 @@ export default {
       code = code + "\n// Каналы\n";
 
       this.chanels.map(c => {
-        let line = `chan ${c.name}=[{${c.length}}] of {${c.type}} ${
+        let line = `chan ${c.name}=[${c.length}] of {${c.type}} ${
           c.description ? "// " + c.description : ""
         }\n`;
         code = code + line;
