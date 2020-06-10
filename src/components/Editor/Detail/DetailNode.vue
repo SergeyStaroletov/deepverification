@@ -1,24 +1,67 @@
 <template>
   <fragment>
-    <el-input
-      v-if="visibleLabelEdit"
-      v-model="formModel.label"
-      @change="change"
-    ></el-input>
-    <el-select
-      v-if="this.formModel.shape === 'flow-run'"
-      @change="changeProcess"
-      v-model="formModel.process"
-      placeholder="Выбирете процесс"
-    >
-      <el-option
-        v-for="item in processes.filter(e => e.type === 'cyber')"
-        :key="item.id"
-        :label="item.name"
-        :value="item.id"
+    <div v-if="visibleLabelEdit">
+      Шаг
+      <el-input v-model="formModel.label" @change="change"></el-input>
+    </div>
+    <div v-if="this.formModel.shape === 'flow-run'">
+      Запуск процесса
+      <el-select
+        @change="changeProcess"
+        v-model="formModel.process"
+        placeholder="Выбирете процесс"
       >
-      </el-option>
-    </el-select>
+        <el-option
+          v-for="item in processes.filter(e => e.type === 'cyber')"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id"
+        >
+        </el-option>
+      </el-select>
+    </div>
+    <div v-if="this.formModel.shape === 'flow-send'">
+      Канал для передачи
+      <el-select
+        @change="changeChanel('Send')"
+        v-model="formModel.chanel"
+        placeholder="Выбирете канал"
+      >
+        <el-option
+          v-for="item in chanels"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id"
+        >
+        </el-option>
+      </el-select>
+      Выражение для передачи
+      <el-input
+        v-model="formModel.variable"
+        @change="changeChanel('Send')"
+      ></el-input>
+    </div>
+    <div v-if="this.formModel.shape === 'flow-get'">
+      Отправка сообщения
+      <el-select
+        @change="changeChanel('Get')"
+        v-model="formModel.chanel"
+        placeholder="Выбирете канал"
+      >
+        <el-option
+          v-for="item in chanels"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id"
+        >
+        </el-option>
+      </el-select>
+      Переменная для сохранения
+      <el-input
+        v-model="formModel.variable"
+        @change="changeChanel('Get')"
+      ></el-input>
+    </div>
   </fragment>
 </template>
 
@@ -38,13 +81,19 @@ export default {
       return this.formModel.shape === "flow-if" ||
         this.formModel.shape === "flow-start" ||
         this.formModel.shape === "flow-end" ||
-        this.formModel.shape === "flow-run"
+        this.formModel.shape === "flow-run" ||
+        this.formModel.shape === "flow-send" ||
+        this.formModel.shape === "flow-get"
         ? false
         : true;
     },
     processes() {
       console.log(this.$store.state.processes);
       return this.$store.state.processes;
+    },
+    chanels() {
+      console.log(this.$store.state.chanels);
+      return this.$store.state.chanels;
     }
   },
   created() {
@@ -76,6 +125,22 @@ export default {
         .update({
           label: newLabel,
           process: this.formModel.process
+        });
+    },
+    changeChanel(type) {
+      let name = this.chanels.find(e => e.id === this.formModel.chanel).name;
+      let newLabel = type + " " + name + " - " + this.formModel.variable;
+      db.collection("projects")
+        .doc(this.$route.params.id)
+        .collection("processes")
+        .doc(this.$route.params.process)
+        .collection("nodes")
+        .doc(this.formModel.id)
+        .update({
+          label: newLabel,
+          chanel: this.formModel.chanel,
+          chanelName: name,
+          variable: this.formModel.variable
         });
     }
   }

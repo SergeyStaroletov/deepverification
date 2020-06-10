@@ -1,9 +1,12 @@
 <template>
-  <el-input
-    v-if="visibleLabelEdit"
-    v-model="formModel.label"
-    @change="change"
-  ></el-input>
+  <div>
+    Условие
+    <el-input
+      v-if="visibleLabelEdit"
+      v-model="formModel.label"
+      @change="change"
+    ></el-input>
+  </div>
 </template>
 
 <script>

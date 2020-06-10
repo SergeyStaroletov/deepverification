@@ -112,7 +112,9 @@
       shape="flow-send"
       :model="{
         label: 'Send',
-        chanel: ''
+        chanel: '',
+        variable: '',
+        chanelName: ''
       }"
       src="/img/send.svg"
     />
@@ -123,7 +125,9 @@
       shape="flow-get"
       :model="{
         label: 'Get',
-        chanel: ''
+        chanel: '',
+        variable: '',
+        chanelName: ''
       }"
       src="/img/get.svg"
     />

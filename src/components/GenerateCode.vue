@@ -239,10 +239,10 @@ export default {
       return "if\n::";
     },
     printSend(node) {
-      return node.variable + "!" + node.chanel;
+      return node.variable + " ! " + node.chanelName + "\n";
     },
     printGet(node) {
-      return node.variable + "?" + node.chanel;
+      return node.variable + " ? " + node.chanelName + "\n";
     },
     printRun(node) {
       return "run " + node.label.substr(4) + "()\n";
