@@ -1,4 +1,4 @@
-# deepverification
+# deepverification: Requirement engineering and cloud based modeling and verification of CPS
 
 ## Подготовка к запуску
 Создайте файл .env.local по шаблону ниже и заполните данными из Вашего firebase проекта. 
